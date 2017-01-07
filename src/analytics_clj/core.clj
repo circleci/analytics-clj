@@ -1,11 +1,25 @@
 (ns analytics-clj.core
   (:import (com.segment.analytics Analytics)
-           (com.segment.analytics.internal AnalyticsClient)))
+           (com.segment.analytics.internal AnalyticsClient)
+           (com.segment.analytics.messages IdentifyMessage ImmutableMap)))
 
 (defn initialize
   "Start building an Analytics instance."
   [write-key]
   (.build (Analytics/builder write-key)))
+
+(defn- full-name
+  "Returns the full name of the map key. If it's a symbol, retrieves the full namespaced name and returns that instead."
+  [k]
+  (if (keyword? k)
+    (str (.-sym k))
+    (name k)))
+
+(defn map->immutable-map [m]
+  (reduce (fn [builder [k v]]
+            (.put builder (full-name k) v))
+          (ImmutableMap/builder)
+          m))
 
 (defn identify
   "`identify` lets you tie a user to their actions and
@@ -14,8 +28,10 @@
   ([^AnalyticsClient client ^String user-id]
    (identify client user-id {}))
   ([^AnalyticsClient client ^String user-id traits]
-   ;; TODO
-   ))
+   (let [traits (.build (map->immutable-map traits))]
+     (.enqueue client (doto (IdentifyMessage/builder)
+                        (.userId user-id)
+                        (.traits traits))))))
 
 (defn track
   "`track` lets you record the actions your users perform.
