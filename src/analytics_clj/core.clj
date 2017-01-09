@@ -1,5 +1,4 @@
 (ns analytics-clj.core
-  (:require [analytics-clj.utils :refer [map->immutable-map]])
   (:import (com.segment.analytics Analytics)
            (com.segment.analytics.messages IdentifyMessage)))
 
@@ -14,11 +13,10 @@
   and any optional traits you know about them."
   ([^Analytics client ^String user-id]
    (identify client user-id {}))
-   (let [traits (map->immutable-map traits)]
-     (.enqueue client (doto (IdentifyMessage/builder)
-                        (.userId user-id)
-                        (.traits traits))))))
   ([^Analytics client ^String user-id traits]
+   (.enqueue client (doto (IdentifyMessage/builder)
+                      (.userId user-id) ;; or (.anonymousId anonymous-id)
+                      (.traits traits)))))
 
 (defn track
   "`track` lets you record the actions your users perform.
