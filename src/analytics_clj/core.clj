@@ -27,7 +27,7 @@
                         (.userId user-id)
                         (.context context)
                         (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
-                        (cond-> (not (empty? traits)) (.traits traits))))))
+                        (cond-> (not (nil? traits)) (.traits traits))))))
 
 (defn track
   "`track` lets you record the actions your users perform.
