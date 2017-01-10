@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [analytics-clj.core :refer :all]))
 
-(defonce client (initialize "foobarbaz"))
+(defonce analytics (initialize "foobarbaz"))
 
 (defmacro testing-void
   "When you want to test a Java function that returns void.
@@ -16,11 +16,11 @@
 
 (deftest test-initialize
   (testing "initialize an analytics client"
-    (is (not (nil? client)))))
+    (is (not (nil? analytics)))))
 
 (deftest test-identify
   (testing-void "we're able to identify a user"
-                (identify client "1234"))
+                (identify analytics "1234"))
 
   (testing-void "identify a user with traits"
-                (identify client "1234" {"email" "foo@bar.com"})))
+                (identify analytics "1234" {"email" "foo@bar.com"})))
