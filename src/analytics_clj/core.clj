@@ -16,11 +16,11 @@
   "`identify` lets you tie a user to their actions and
   record traits about them. It includes a unique User ID
   and any optional traits you know about them."
-  ([^Analytics analytics ^String user-id]
+  ([^Analytics analytics user-id]
    (identify analytics user-id {}))
-  ([^Analytics analytics ^String user-id traits]
+  ([^Analytics analytics user-id traits]
    (identify analytics user-id traits {}))
-  ([^Analytics analytics ^String user-id traits {:keys [anonymous-id]}]
+  ([^Analytics analytics user-id traits {:keys [anonymous-id]}]
    (enqueue analytics (doto (IdentifyMessage/builder)
                         (.userId user-id)
                         (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
@@ -30,9 +30,9 @@
   "`track` lets you record the actions your users perform.
   Every action triggers what we call an “event”, which can
   also have associated properties."
-  ([^Analytics analytics ^String user-id ^String event]
+  ([^Analytics analytics user-id event]
    (track analytics user-id event {}))
-  ([^Analytics analytics ^String user-id ^String event properties]
+  ([^Analytics analytics user-id event properties]
    ;; TODO
    ))
 
@@ -40,9 +40,9 @@
   "The `screen` method lets you you record whenever a user
   sees a screen of your mobile app, along with optional
   extra information about the page being viewed."
-  ([^Analytics analytics ^String user-id ^String name ^String category]
+  ([^Analytics analytics user-id name category]
    (screen analytics user-id name category {}))
-  ([^Analytics analytics ^String user-id ^String name ^String category properties]
+  ([^Analytics analytics user-id name category properties]
    ;; TODO
    ))
 
@@ -51,9 +51,9 @@
   a group. A group could be a company, organization, account,
   project or team! It also lets you record custom traits
   about the group, like industry or number of employees."
-  ([^Analytics analytics ^String user-id ^String group-id]
+  ([^Analytics analytics user-id group-id]
    (group analytics user-id group-id {}))
-  ([^Analytics analytics ^String user-id ^String group-id traits]
+  ([^Analytics analytics user-id group-id traits]
    ;; TODO
    ))
 
@@ -61,7 +61,7 @@
   "`alias` is how you associate one identity with another.
   This is an advanced method, but it is required to manage
   user identities successfully in some of our integrations."
-  [^Analytics analytics ^String previous-id ^String user-id]
+  [^Analytics analytics previous-id user-id]
   ;; TODO
   )
 
