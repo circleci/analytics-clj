@@ -2,6 +2,8 @@
   (:import (com.segment.analytics Analytics)
            (com.segment.analytics.messages IdentifyMessage MessageBuilder)))
 
+(def context {"library" "analytics-clj"})
+
 (defn initialize
   "Start building an Analytics instance."
   [write-key]
@@ -23,6 +25,7 @@
   ([^Analytics analytics user-id traits {:keys [anonymous-id]}]
    (enqueue analytics (doto (IdentifyMessage/builder)
                         (.userId user-id)
+                        (.context context)
                         (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
                         (cond-> (not (empty? traits)) (.traits traits))))))
 
