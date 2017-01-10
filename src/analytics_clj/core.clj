@@ -1,11 +1,16 @@
 (ns analytics-clj.core
   (:import (com.segment.analytics Analytics)
-           (com.segment.analytics.messages IdentifyMessage)))
+           (com.segment.analytics.messages IdentifyMessage MessageBuilder)))
 
 (defn initialize
   "Start building an Analytics instance."
   [write-key]
   (.build (Analytics/builder write-key)))
+
+(defn enqueue
+  "Top-level `enqueue` function to allow for extensibility in the future."
+  [^Analytics client ^MessageBuilder message]
+  (.enqueue client message))
 
 (defn identify
   "`identify` lets you tie a user to their actions and
