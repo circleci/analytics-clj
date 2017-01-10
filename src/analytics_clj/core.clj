@@ -21,7 +21,7 @@
   ([^Analytics analytics ^String user-id traits]
    (enqueue analytics (doto (IdentifyMessage/builder)
                         (.userId user-id) ;; or (.anonymousId anonymous-id)
-                        (.traits traits)))))
+                        (cond-> (not-empty traits) (.traits traits))))))
 
 (defn track
   "`track` lets you record the actions your users perform.
