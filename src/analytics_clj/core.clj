@@ -19,8 +19,11 @@
   ([^Analytics analytics ^String user-id]
    (identify analytics user-id {}))
   ([^Analytics analytics ^String user-id traits]
+   (identify analytics user-id traits {}))
+  ([^Analytics analytics ^String user-id traits {:keys [anonymous-id]}]
    (enqueue analytics (doto (IdentifyMessage/builder)
-                        (.userId user-id) ;; or (.anonymousId anonymous-id)
+                        (.userId user-id)
+                        (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
                         (cond-> (not-empty traits) (.traits traits))))))
 
 (defn track

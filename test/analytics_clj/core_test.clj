@@ -1,6 +1,7 @@
 (ns analytics-clj.core-test
   (:require [clojure.test :refer :all]
-            [analytics-clj.core :refer :all]))
+            [analytics-clj.core :refer :all])
+  (:import (java.util UUID)))
 
 (defonce analytics (initialize "foobarbaz"))
 
@@ -23,4 +24,7 @@
                 (identify analytics "1234"))
 
   (testing-void "identify a user with traits"
-                (identify analytics "1234" {"email" "foo@bar.com"})))
+                (identify analytics "1234" {"email" "foo@bar.com"}))
+
+  (testing-void "identify an anonymous user"
+                (identify analytics "1234" {} {:anonymous-id (UUID/randomUUID)})))
