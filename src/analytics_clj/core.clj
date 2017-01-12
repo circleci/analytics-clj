@@ -55,6 +55,10 @@
                         (common-properties (merge {:user-id user-id} options))
                         (cond-> (not (nil? traits)) (traits* (string-keys traits)))))))
 
+(defn properties* [^MessageBuilder message-builder properties]
+  (doto message-builder
+    (.properties properties)))
+
 (defn track
   "`track` lets you record the actions your users perform.
   Every action triggers what we call an “event”, which can
@@ -66,7 +70,7 @@
   ([^Analytics analytics user-id event properties options]
    (enqueue analytics (doto (TrackMessage/builder event)
                         (common-properties (merge {:user-id user-id} options))
-                        (cond-> (not (nil? properties)) (.properties (string-keys properties)))))))
+                        (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
 
 (defn screen
   "The `screen` method lets you you record whenever a user

@@ -43,5 +43,8 @@
   (testing-void "track a simple event"
                 (track analytics "1234" "signup"))
 
-  (testing-void "track an event with custom properties"
-                (track analytics "1234" "signup" {"company" "Acme Inc."})))
+  (testing "track an event with custom properties"
+    (with-redefs [properties* (fn [mb properties]
+                                (is (= "company" (-> properties keys first))))]
+      (track analytics "1234" "signup" {"company" "Acme Inc."})
+      (track analytics "1234" "signup" {:company "Acme Inc."}))))
