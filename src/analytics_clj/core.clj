@@ -22,10 +22,10 @@
    (identify analytics user-id {}))
   ([^Analytics analytics user-id traits]
    (identify analytics user-id traits {}))
-  ([^Analytics analytics user-id traits {:keys [anonymous-id]}]
+  ([^Analytics analytics user-id traits {:keys [context anonymous-id]}]
    (enqueue analytics (doto (IdentifyMessage/builder)
                         (.userId user-id)
-                        (.context context)
+                        (cond-> (not (nil? context)) (.context context))
                         (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
                         (cond-> (not (nil? traits)) (.traits traits))))))
 
