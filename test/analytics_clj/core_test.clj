@@ -27,7 +27,7 @@
                 (identify analytics "1234" {"email" "foo@bar.com"}))
 
   (testing-void "identify an anonymous user"
-                (identify analytics "1234" {} {:anonymous-id (UUID/randomUUID)})))
+                (identify analytics nil {} {:anonymous-id (UUID/randomUUID)})))
 
 (deftest test-track
   (testing-void "track a simple event"
