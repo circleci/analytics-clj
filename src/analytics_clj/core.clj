@@ -1,4 +1,5 @@
 (ns analytics-clj.core
+  (:refer-clojure :exclude [alias flush])
   (:import (com.segment.analytics Analytics)
            (com.segment.analytics.messages IdentifyMessage
                                            MessageBuilder
