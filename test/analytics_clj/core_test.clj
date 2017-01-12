@@ -26,6 +26,16 @@
   (testing-void "identify a user with traits"
                 (identify analytics "1234" {"email" "foo@bar.com"}))
 
+  (testing "identify a user with keyword traits"
+    (with-redefs [traits* (fn [mb traits]
+                            (is (= "email" (-> traits keys first))))]
+      (identify analytics "1234" {:email "foo@bar.com"})))
+
+  (testing "identify a user with namespaced keyword traits"
+    (with-redefs [traits* (fn [mb traits]
+                            (is (= "email/address" (-> traits keys first))))]
+      (identify analytics "1234" {:email/address "foo@bar.com"})))
+
   (testing-void "identify an anonymous user"
                 (identify analytics nil {} {:anonymous-id (UUID/randomUUID)})))
 
