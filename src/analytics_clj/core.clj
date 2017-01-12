@@ -16,6 +16,16 @@
   [^Analytics analytics ^MessageBuilder message]
   (.enqueue analytics message))
 
+(defn flush
+  "Flush events in the message queue."
+  [^Analytics analytics]
+  (.flush analytics))
+
+(defn shutdown
+  "Stops this instance from processing further requests."
+  [^Analytics analytics]
+  (.shutdown analytics))
+
 (defn common-properties
   "The `MessageBuilder` interface has a set of properties common to all messages."
   [^MessageBuilder message-builder {:keys [anonymous-id context integrations timestamp user-id]}]
@@ -80,13 +90,3 @@
   [^Analytics analytics previous-id user-id]
   ;; TODO
   )
-
-(defn flush
-  "Flush events in the message queue."
-  [^Analytics analytics]
-  (.flush analytics))
-
-(defn shutdown
-  "Stops this instance from processing further requests."
-  [^Analytics analytics]
-  (.shutdown analytics))
