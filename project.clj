@@ -1,5 +1,5 @@
 (defproject analytics-clj "0.4.0-SNAPSHOT"
-  :description "Idiomatic Clojure wrapper for the segment.io 2.x Java client"
+  :description "Idiomatic Clojure wrapper for the Segment.io 2.x Java client"
   :url "https://github.com/circleci/analytics-clj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
