@@ -28,3 +28,7 @@
 
   (testing-void "identify an anonymous user"
                 (identify analytics "1234" {} {:anonymous-id (UUID/randomUUID)})))
+
+(deftest test-track
+  (testing-void "track a simple event"
+                (track analytics "1234" "signup")))

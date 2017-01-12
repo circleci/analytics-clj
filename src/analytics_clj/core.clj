@@ -1,6 +1,8 @@
 (ns analytics-clj.core
   (:import (com.segment.analytics Analytics)
-           (com.segment.analytics.messages IdentifyMessage MessageBuilder)))
+           (com.segment.analytics.messages IdentifyMessage
+                                           MessageBuilder
+                                           TrackMessage)))
 
 (def context {"library" "analytics-clj"})
 
@@ -36,8 +38,8 @@
   ([^Analytics analytics user-id event]
    (track analytics user-id event {}))
   ([^Analytics analytics user-id event properties]
-   ;; TODO
-   ))
+   (enqueue analytics (doto (TrackMessage/builder event)
+                        (.userId user-id)))))
 
 (defn screen
   "The `screen` method lets you you record whenever a user
