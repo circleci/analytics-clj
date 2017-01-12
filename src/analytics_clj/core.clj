@@ -38,7 +38,7 @@
     (cond-> (not (nil? timestamp)) (.timestamp timestamp))
     (cond-> (not (nil? user-id)) (.userId user-id))))
 
-(defn traits* [^MessageBuilder message-builder traits]
+(defn- traits* [^MessageBuilder message-builder traits]
   (doto message-builder
     (.traits traits)))
 
@@ -55,7 +55,7 @@
                         (common-properties (merge {:user-id user-id} options))
                         (cond-> (not (nil? traits)) (traits* (string-keys traits)))))))
 
-(defn properties* [^MessageBuilder message-builder properties]
+(defn- properties* [^MessageBuilder message-builder properties]
   (doto message-builder
     (.properties properties)))
 
