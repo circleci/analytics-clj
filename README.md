@@ -1,10 +1,12 @@
 # analytics-clj
 
-Idiomatic Clojure wrapper for the segment.io 2.x Java client
+Idiomatic Clojure wrapper for the Segment.io 2.x Java client
 
 ## Usage
 
-FIXME
+### Installation
+
+[analytics-clj "0.4.0-SNAPSHOT"]
 
 ## License
 
