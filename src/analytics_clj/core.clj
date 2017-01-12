@@ -16,6 +16,16 @@
   [^Analytics analytics ^MessageBuilder message]
   (.enqueue analytics message))
 
+(defn common-properties
+  "The `MessageBuilder` interface has a set of properties common to all messages."
+  [^MessageBuilder message-builder {:keys [anonymous-id context integrations timestamp user-id]}]
+  (doto message-builder
+    (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
+    (cond-> (not (nil? context)) (.context context))
+    (cond-> (not (nil? integrations)) (.integrations integrations))
+    (cond-> (not (nil? timestamp)) (.timestamp timestamp))
+    (cond-> (not (nil? user-id)) (.userId user-id))))
+
 (defn identify
   "`identify` lets you tie a user to their actions and
   record traits about them. It includes a unique User ID
@@ -24,11 +34,9 @@
    (identify analytics user-id {}))
   ([^Analytics analytics user-id traits]
    (identify analytics user-id traits {}))
-  ([^Analytics analytics user-id traits {:keys [context anonymous-id]}]
+  ([^Analytics analytics user-id traits options]
    (enqueue analytics (doto (IdentifyMessage/builder)
-                        (.userId user-id)
-                        (cond-> (not (nil? context)) (.context context))
-                        (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
+                        (common-properties (merge {:user-id user-id} options))
                         (cond-> (not (nil? traits)) (.traits traits))))))
 
 (defn track
@@ -38,8 +46,11 @@
   ([^Analytics analytics user-id event]
    (track analytics user-id event {}))
   ([^Analytics analytics user-id event properties]
+   (track analytics user-id event properties {}))
+  ([^Analytics analytics user-id event properties options]
    (enqueue analytics (doto (TrackMessage/builder event)
-                        (.userId user-id)))))
+                        (common-properties (merge {:user-id user-id} options))
+                        (cond-> (not (nil? properties)) (.properties properties))))))
 
 (defn screen
   "The `screen` method lets you you record whenever a user

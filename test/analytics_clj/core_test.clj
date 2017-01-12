@@ -31,4 +31,7 @@
 
 (deftest test-track
   (testing-void "track a simple event"
-                (track analytics "1234" "signup")))
+                (track analytics "1234" "signup"))
+
+  (testing-void "track an event with custom properties"
+                (track analytics "1234" "signup" {"company" "Acme Inc."})))
