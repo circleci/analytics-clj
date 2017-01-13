@@ -28,14 +28,20 @@
                 (a/identify analytics "1234" {"email" "foo@bar.com"}))
 
   (testing "identify a user with keyword traits"
-    (with-redefs [e/traits* (fn [mb traits]
-                              (is (= "email" (-> traits keys first))))]
-      (a/identify analytics "1234" {:email "foo@bar.com"})))
+    (let [called (atom false)]
+      (with-redefs [e/traits* (fn [mb traits]
+                                (is (= "email" (-> traits keys first)))
+                                (reset! called true))]
+        (a/identify analytics "1234" {:email "foo@bar.com"})
+        (is @called))))
 
   (testing "identify a user with namespaced keyword traits"
-    (with-redefs [e/traits* (fn [mb traits]
-                              (is (= "email/address" (-> traits keys first))))]
-      (a/identify analytics "1234" {:email/address "foo@bar.com"})))
+    (let [called (atom false)]
+      (with-redefs [e/traits* (fn [mb traits]
+                                (is (= "email/address" (-> traits keys first)))
+                                (reset! called true))]
+        (a/identify analytics "1234" {:email/address "foo@bar.com"})
+        (is @called))))
 
   (testing-void "identify an anonymous user"
                 (a/identify analytics nil {} {:anonymous-id (UUID/randomUUID)})))
@@ -45,16 +51,22 @@
                 (a/track analytics "1234" "signup"))
 
   (testing "track an event with custom properties"
-    (with-redefs [e/properties* (fn [mb properties]
-                                  (is (= "company" (-> properties keys first))))]
-      (a/track analytics "1234" "signup" {"company" "Acme Inc."})
-      (a/track analytics "1234" "signup" {:company "Acme Inc."})))
+    (let [called (atom false)]
+      (with-redefs [e/properties* (fn [mb properties]
+                                    (is (= "company" (-> properties keys first)))
+                                    (reset! called true))]
+        (a/track analytics "1234" "signup" {"company" "Acme Inc."})
+        (a/track analytics "1234" "signup" {:company "Acme Inc."})
+        (is @called))))
 
   (testing "disable an integration"
-    (with-redefs [e/enable-integration* (fn [mb k v]
-                                          (is (= "Amplitude" k))
-                                          (is (= false v)))]
-      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})))
+    (let [called (atom false)]
+      (with-redefs [e/enable-integration* (fn [mb k v]
+                                            (is (= "Amplitude" k))
+                                            (is (= false v))
+                                            (reset! called true))]
+        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})
+        (is @called))))
 
   (testing "custom context is merged with library context"
     (let [called (atom false)]
