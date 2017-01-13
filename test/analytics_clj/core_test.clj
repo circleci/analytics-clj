@@ -47,4 +47,10 @@
     (with-redefs [properties* (fn [mb properties]
                                 (is (= "company" (-> properties keys first))))]
       (track analytics "1234" "signup" {"company" "Acme Inc."})
-      (track analytics "1234" "signup" {:company "Acme Inc."}))))
+      (track analytics "1234" "signup" {:company "Acme Inc."})))
+
+  (testing "disable an integration"
+    (with-redefs [enable-integration* (fn [mb k v]
+                                        (is (= "Amplitude" k))
+                                        (is (= false v)))]
+      (track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}}))))

@@ -28,13 +28,21 @@
   [^Analytics analytics]
   (.shutdown analytics))
 
+(defn- enable-integration* [^MessageBuilder message-builder k v]
+  (doto message-builder
+    (.enableIntegration k v)))
+
+(defn- enable-integrations [^MessageBuilder message-builder integrations]
+  (doseq [[k v] integrations]
+    (enable-integration* message-builder k v)))
+
 (defn common-properties
   "The `MessageBuilder` interface has a set of properties common to all messages."
   [^MessageBuilder message-builder {:keys [anonymous-id context integrations timestamp user-id]}]
   (doto message-builder
     (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
     (cond-> (not (nil? context)) (.context (string-keys context)))
-    (cond-> (not (nil? integrations)) (.integrations (string-keys integrations)))
+    (cond-> (not (nil? integrations)) (enable-integrations integrations))
     (cond-> (not (nil? timestamp)) (.timestamp timestamp))
     (cond-> (not (nil? user-id)) (.userId user-id))))
 
