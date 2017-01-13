@@ -1,4 +1,4 @@
-(ns analytics-clj.external
+(ns circleci.analytics-clj.external
   (:import (com.segment.analytics.messages MessageBuilder)))
 
 (defn anonymous-id* [^MessageBuilder message-builder anonymous-id]

@@ -1,7 +1,7 @@
-(ns analytics-clj.core
+(ns circleci.analytics-clj.core
   (:refer-clojure :exclude [alias flush])
-  (:require [analytics-clj.external :refer :all]
-            [analytics-clj.utils :refer [string-keys]])
+  (:require [circleci.analytics-clj.external :refer :all]
+            [circleci.analytics-clj.utils :refer [string-keys]])
   (:import (com.segment.analytics Analytics)
            (com.segment.analytics.messages AliasMessage
                                            GroupMessage

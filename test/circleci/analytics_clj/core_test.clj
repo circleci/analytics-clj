@@ -1,7 +1,7 @@
-(ns analytics-clj.core-test
-  (:require [clojure.test :refer :all]
-            [analytics-clj.core :as a]
-            [analytics-clj.external :as e])
+(ns circleci.analytics-clj.core-test
+  (:require [circleci.analytics-clj.core :as a]
+            [circleci.analytics-clj.external :as e]
+            [clojure.test :refer :all])
   (:import (java.util UUID)))
 
 (defonce analytics (a/initialize "foobarbaz"))

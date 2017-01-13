@@ -18,7 +18,10 @@ View the full [API](https://circleci.github.io/analytics-clj/).
 
 #### Initialize an analytics client
 
-`(def analytics (initialize "<writeKey>"))`
+````
+(use '[circleci.analytics-clj.core])
+(def analytics (initialize "<writeKey>"))
+````
 
 #### Identify a user
 

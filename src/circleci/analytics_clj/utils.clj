@@ -1,4 +1,4 @@
-(ns analytics-clj.utils
+(ns circleci.analytics-clj.utils
   (require [clojure.walk :as walk]))
 
 (defn string-keys
