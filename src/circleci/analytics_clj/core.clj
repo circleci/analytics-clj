@@ -54,11 +54,10 @@
 
   [message-builder {:keys [anonymous-id context integration-options integrations timestamp user-id]}]
   (doto message-builder
+    (context* (merge ctx (string-keys context)))
+
     (cond-> (not (nil? anonymous-id))
       (anonymous-id* anonymous-id))
-
-    (cond-> (not (nil? context))
-      (context* (merge ctx (string-keys context))))
 
     (cond-> (not (nil? integration-options))
       (enable-integration-options integration-options))
