@@ -1,4 +1,4 @@
-(defproject circleici/analytics-clj "0.4.0-SNAPSHOT"
+(defproject circleci/analytics-clj "0.4.0-SNAPSHOT"
   :description "Idiomatic Clojure wrapper for the Segment.io 2.x Java client"
   :url "https://github.com/circleci/analytics-clj"
   :license {:name "Eclipse Public License"
