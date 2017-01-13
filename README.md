@@ -8,6 +8,8 @@ Idiomatic Clojure wrapper for the Segment.io 2.x Java client
 
 ## Usage
 
+View the full [API](https://circleci.github.io/analytics-clj/).
+
 #### Initialize an analytics client
 
 `(def analytics (initialize "<writeKey>"))`
