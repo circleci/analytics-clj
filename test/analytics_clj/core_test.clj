@@ -24,14 +24,14 @@
   (testing-void "we're able to identify a user"
                 (a/identify analytics "1234"))
 
-  (testing-void "identify a user with traits"
-                (a/identify analytics "1234" {"email" "foo@bar.com"}))
-
-  (testing "identify a user with keyword traits"
+  (testing "identify a user with traits"
     (let [called (atom false)]
       (with-redefs [e/traits* (fn [mb traits]
                                 (is (= "email" (-> traits keys first)))
                                 (reset! called true))]
+        (a/identify analytics "1234" {"email" "foo@bar.com"})
+        (is @called)
+        (reset! called false)
         (a/identify analytics "1234" {:email "foo@bar.com"})
         (is @called))))
 
