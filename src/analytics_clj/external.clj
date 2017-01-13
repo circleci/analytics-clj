@@ -17,6 +17,10 @@
   (doto message-builder
     (.integrationOptions integration options)))
 
+(defn log* [analytics-builder log]
+  (doto analytics-builder
+    (.log log)))
+
 (defn properties* [^MessageBuilder message-builder properties]
   (doto message-builder
     (.properties properties)))

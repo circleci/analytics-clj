@@ -14,8 +14,13 @@
 (defn initialize
   "Start building an Analytics instance."
 
-  [write-key]
-  (.build (Analytics/builder write-key)))
+  ([write-key]
+   (initialize write-key nil))
+
+  ([write-key log]
+   (.build (doto (Analytics/builder write-key)
+             (cond-> (not (nil? log))
+               (log* log))))))
 
 (defn enqueue
   "Top-level `enqueue` function to allow for extensibility in the future."
