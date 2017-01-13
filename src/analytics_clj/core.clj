@@ -6,7 +6,7 @@
                                            MessageBuilder
                                            TrackMessage)))
 
-(def context {"library" "analytics-clj"})
+(def ^:private context {"library" "analytics-clj"})
 
 (defn initialize
   "Start building an Analytics instance."
