@@ -1,6 +1,7 @@
 (ns analytics-clj.core-test
   (:require [clojure.test :refer :all]
-            [analytics-clj.core :as a])
+            [analytics-clj.core :as a]
+            [analytics-clj.external :as e])
   (:import (java.util UUID)))
 
 (defonce analytics (a/initialize "foobarbaz"))
@@ -27,12 +28,12 @@
                 (a/identify analytics "1234" {"email" "foo@bar.com"}))
 
   (testing "identify a user with keyword traits"
-    (with-redefs [a/traits* (fn [mb traits]
+    (with-redefs [e/traits* (fn [mb traits]
                               (is (= "email" (-> traits keys first))))]
       (a/identify analytics "1234" {:email "foo@bar.com"})))
 
   (testing "identify a user with namespaced keyword traits"
-    (with-redefs [a/traits* (fn [mb traits]
+    (with-redefs [e/traits* (fn [mb traits]
                               (is (= "email/address" (-> traits keys first))))]
       (a/identify analytics "1234" {:email/address "foo@bar.com"})))
 
@@ -44,20 +45,20 @@
                 (a/track analytics "1234" "signup"))
 
   (testing "track an event with custom properties"
-    (with-redefs [a/properties* (fn [mb properties]
+    (with-redefs [e/properties* (fn [mb properties]
                                   (is (= "company" (-> properties keys first))))]
       (a/track analytics "1234" "signup" {"company" "Acme Inc."})
       (a/track analytics "1234" "signup" {:company "Acme Inc."})))
 
   (testing "disable an integration"
-    (with-redefs [a/enable-integration* (fn [mb k v]
+    (with-redefs [e/enable-integration* (fn [mb k v]
                                           (is (= "Amplitude" k))
                                           (is (= false v)))]
       (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})))
 
   (testing "custom context is merged with library context"
     (let [called (atom false)]
-      (with-redefs [a/context* (fn [mb c]
+      (with-redefs [e/context* (fn [mb c]
                                  (is (= #{"library" "language"} (set (keys c))))
                                  (reset! called true))]
         (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:context {:language "en-us"}})
@@ -65,7 +66,7 @@
 
   (testing "integration options"
     (let [called (atom false)]
-      (with-redefs [a/integration-options* (fn [mb i o]
+      (with-redefs [e/integration-options* (fn [mb i o]
                                              (is (= "Amplitude" i))
                                              (is (= "session-id" (-> o keys first)))
                                              (is (= "1234567890" (-> o vals first)))

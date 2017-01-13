@@ -1,6 +1,7 @@
 (ns analytics-clj.core
   (:refer-clojure :exclude [alias flush])
-  (:require [analytics-clj.utils :refer [string-keys]])
+  (:require [analytics-clj.external :refer :all]
+            [analytics-clj.utils :refer [string-keys]])
   (:import (com.segment.analytics Analytics)
            (com.segment.analytics.messages IdentifyMessage
                                            MessageBuilder
@@ -28,23 +29,13 @@
   [^Analytics analytics]
   (.shutdown analytics))
 
-(defn- enable-integration* [^MessageBuilder message-builder k v]
-  (doto message-builder
-    (.enableIntegration k v)))
-
 (defn- enable-integrations [^MessageBuilder message-builder integrations]
   (doseq [[k v] integrations]
     (enable-integration* message-builder k v)))
 
-(defn- integration-options* [^MessageBuilder message-builder integration options]
-  (.integrationOptions message-builder integration options))
-
 (defn- enable-integration-options [^MessageBuilder message-builder integration-options]
   (doseq [[integration options] integration-options]
     (integration-options* message-builder integration (string-keys options))))
-
-(defn- context* [^MessageBuilder message-builder context]
-  (.context message-builder context))
 
 (defn common-properties
   "The `MessageBuilder` interface has a set of properties common to all messages."
@@ -56,10 +47,6 @@
     (cond-> (not (nil? integrations)) (enable-integrations integrations))
     (cond-> (not (nil? timestamp)) (.timestamp timestamp))
     (cond-> (not (nil? user-id)) (.userId user-id))))
-
-(defn- traits* [^MessageBuilder message-builder traits]
-  (doto message-builder
-    (.traits traits)))
 
 (defn identify
   "`identify` lets you tie a user to their actions and
@@ -73,10 +60,6 @@
    (enqueue analytics (doto (IdentifyMessage/builder)
                         (common-properties (merge {:user-id user-id} options))
                         (cond-> (not (nil? traits)) (traits* (string-keys traits)))))))
-
-(defn- properties* [^MessageBuilder message-builder properties]
-  (doto message-builder
-    (.properties properties)))
 
 (defn track
   "`track` lets you record the actions your users perform.
