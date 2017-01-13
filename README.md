@@ -32,15 +32,23 @@ With properties:
 
 #### Screen
 
-TODO
+`(screen analytics "1234" "Login Page")`
+
+With properties:
+
+`(screen analytics "1234" "Login Page" {:path "/users/login"})`
 
 #### Group
 
-TODO
+`(group analytics "1234" "group-5678")`
+
+With traits:
+
+`(group analytics "1234" "group-5678" {:name "Segment"})`
 
 #### Alias
 
-TODO
+`(alias analytics "anonymous_user" "5678")`
 
 ## License
 
