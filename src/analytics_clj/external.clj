@@ -9,9 +9,9 @@
   (doto message-builder
     (.context context)))
 
-(defn enable-integration* [^MessageBuilder message-builder k v]
+(defn enable-integration* [^MessageBuilder message-builder integration enable?]
   (doto message-builder
-    (.enableIntegration k v)))
+    (.enableIntegration integration enable?)))
 
 (defn integration-options* [^MessageBuilder message-builder integration options]
   (doto message-builder

@@ -36,8 +36,8 @@
   (.shutdown analytics))
 
 (defn- enable-integrations [message-builder integrations]
-  (doseq [[k v] integrations]
-    (enable-integration* message-builder k v)))
+  (doseq [[integration enable?] integrations]
+    (enable-integration* message-builder integration enable?)))
 
 (defn- enable-integration-options [message-builder integration-options]
   (doseq [[integration options] integration-options]

@@ -61,9 +61,9 @@
 
   (testing "disable an integration"
     (let [called (atom false)]
-      (with-redefs [e/enable-integration* (fn [mb k v]
-                                            (is (= "Amplitude" k))
-                                            (is (= false v))
+      (with-redefs [e/enable-integration* (fn [mb integration enable?]
+                                            (is (= "Amplitude" integration))
+                                            (is (= false enable?))
                                             (reset! called true))]
         (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})
         (is @called))))
