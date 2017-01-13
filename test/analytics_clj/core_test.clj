@@ -28,12 +28,12 @@
 
   (testing "identify a user with keyword traits"
     (with-redefs [a/traits* (fn [mb traits]
-                            (is (= "email" (-> traits keys first))))]
+                              (is (= "email" (-> traits keys first))))]
       (a/identify analytics "1234" {:email "foo@bar.com"})))
 
   (testing "identify a user with namespaced keyword traits"
     (with-redefs [a/traits* (fn [mb traits]
-                            (is (= "email/address" (-> traits keys first))))]
+                              (is (= "email/address" (-> traits keys first))))]
       (a/identify analytics "1234" {:email/address "foo@bar.com"})))
 
   (testing-void "identify an anonymous user"
@@ -45,12 +45,12 @@
 
   (testing "track an event with custom properties"
     (with-redefs [a/properties* (fn [mb properties]
-                                (is (= "company" (-> properties keys first))))]
+                                  (is (= "company" (-> properties keys first))))]
       (a/track analytics "1234" "signup" {"company" "Acme Inc."})
       (a/track analytics "1234" "signup" {:company "Acme Inc."})))
 
   (testing "disable an integration"
     (with-redefs [a/enable-integration* (fn [mb k v]
-                                        (is (= "Amplitude" k))
-                                        (is (= false v)))]
+                                          (is (= "Amplitude" k))
+                                          (is (= false v)))]
       (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}}))))
