@@ -36,12 +36,20 @@
   (doseq [[k v] integrations]
     (enable-integration* message-builder k v)))
 
+(defn- integration-options* [^MessageBuilder message-builder integration options]
+  (.integrationOptions message-builder integration options))
+
+(defn- enable-integration-options [^MessageBuilder message-builder integration-options]
+  (doseq [[integration options] integration-options]
+    (integration-options* message-builder integration (string-keys options))))
+
 (defn common-properties
   "The `MessageBuilder` interface has a set of properties common to all messages."
-  [^MessageBuilder message-builder {:keys [anonymous-id context integrations timestamp user-id]}]
+  [^MessageBuilder message-builder {:keys [anonymous-id context integration-options integrations timestamp user-id]}]
   (doto message-builder
     (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
     (cond-> (not (nil? context)) (.context (string-keys context)))
+    (cond-> (not (nil? integration-options)) (enable-integration-options integration-options))
     (cond-> (not (nil? integrations)) (enable-integrations integrations))
     (cond-> (not (nil? timestamp)) (.timestamp timestamp))
     (cond-> (not (nil? user-id)) (.userId user-id))))

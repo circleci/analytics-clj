@@ -53,4 +53,14 @@
     (with-redefs [a/enable-integration* (fn [mb k v]
                                           (is (= "Amplitude" k))
                                           (is (= false v)))]
-      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}}))))
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})))
+
+  (testing "integration options"
+    (let [called (atom false)]
+      (with-redefs [a/integration-options* (fn [mb i o]
+                                             (is (= "Amplitude" i))
+                                             (is (= "session-id" (-> o keys first)))
+                                             (is (= "1234567890" (-> o vals first)))
+                                             (reset! called true))]
+        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integration-options {"Amplitude" {:session-id "1234567890"}}})
+        (is @called)))))
