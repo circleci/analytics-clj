@@ -94,3 +94,16 @@
                                    (reset! called true))]
         (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:timestamp timestamp})
         (is @called)))))
+
+(deftest test-screen
+  (testing-void "a simple screen call"
+                (a/screen analytics "1234" "Login Page"))
+
+  (testing "a screen call with custom properties"
+    (let [called (atom false)]
+      (with-redefs [e/properties* (fn [mb properties]
+                                    (is (= "path" (-> properties keys first)))
+                                    (is (= "/users/login" (-> properties vals first)))
+                                    (reset! called true))]
+        (a/screen analytics "1234" "Login Page" {:path "/users/login"})
+        (is @called)))))

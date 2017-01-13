@@ -3,7 +3,9 @@
   (:require [analytics-clj.external :refer :all]
             [analytics-clj.utils :refer [string-keys]])
   (:import (com.segment.analytics Analytics)
-           (com.segment.analytics.messages IdentifyMessage TrackMessage)))
+           (com.segment.analytics.messages IdentifyMessage
+                                           ScreenMessage
+                                           TrackMessage)))
 
 (def ^:private ctx {"library" "analytics-clj"})
 
@@ -76,11 +78,14 @@
   "The `screen` method lets you you record whenever a user
   sees a screen of your mobile app, along with optional
   extra information about the page being viewed."
-  ([^Analytics analytics user-id name category]
-   (screen analytics user-id name category {}))
-  ([^Analytics analytics user-id name category properties]
-   ;; TODO
-   ))
+  ([^Analytics analytics user-id name]
+   (screen analytics user-id name {}))
+  ([^Analytics analytics user-id name properties]
+   (screen analytics user-id name properties {}))
+  ([^Analytics analytics user-id name properties options]
+   (enqueue analytics (doto (ScreenMessage/builder name)
+                        (common-properties (merge {:user-id user-id} options))
+                        (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
 
 (defn group
   "`group` lets you associate an identified user user with
