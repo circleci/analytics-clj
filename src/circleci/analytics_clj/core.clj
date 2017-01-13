@@ -9,7 +9,8 @@
                                            ScreenMessage
                                            TrackMessage)))
 
-(def ^:private ctx {"library" "analytics-clj"})
+(def ^:private ctx {"library" {"name" "analytics-clj"
+                               "version" "0.4.0-SNAPSHOT"}})
 
 (defn initialize
   "Start building an Analytics instance."
