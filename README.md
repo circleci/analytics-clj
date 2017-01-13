@@ -4,6 +4,10 @@ Idiomatic Clojure wrapper for the Segment.io 2.x Java client
 
 For full documentation on the Segment.io 2.x Java client, see [analytics-java](https://github.com/segmentio/analytics-java).
 
+## Build Status
+
+[![CircleCI](https://circleci.com/gh/circleci/analytics-clj/tree/master.svg?style=svg)](https://circleci.com/gh/circleci/analytics-clj/tree/master)
+
 ## Installation
 
 *Not yet released*
