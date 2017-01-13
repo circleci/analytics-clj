@@ -55,6 +55,14 @@
                                           (is (= false v)))]
       (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})))
 
+  (testing "custom context is merged with library context"
+    (let [called (atom false)]
+      (with-redefs [a/context* (fn [mb c]
+                                 (is (= #{"library" "language"} (set (keys c))))
+                                 (reset! called true))]
+        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:context {:language "en-us"}})
+        (is @called))))
+
   (testing "integration options"
     (let [called (atom false)]
       (with-redefs [a/integration-options* (fn [mb i o]

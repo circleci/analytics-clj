@@ -6,7 +6,7 @@
                                            MessageBuilder
                                            TrackMessage)))
 
-(def ^:private context {"library" "analytics-clj"})
+(def ^:private ctx {"library" "analytics-clj"})
 
 (defn initialize
   "Start building an Analytics instance."
@@ -43,12 +43,15 @@
   (doseq [[integration options] integration-options]
     (integration-options* message-builder integration (string-keys options))))
 
+(defn- context* [^MessageBuilder message-builder context]
+  (.context message-builder context))
+
 (defn common-properties
   "The `MessageBuilder` interface has a set of properties common to all messages."
   [^MessageBuilder message-builder {:keys [anonymous-id context integration-options integrations timestamp user-id]}]
   (doto message-builder
     (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
-    (cond-> (not (nil? context)) (.context (string-keys context)))
+    (cond-> (not (nil? context)) (context* (merge ctx (string-keys context))))
     (cond-> (not (nil? integration-options)) (enable-integration-options integration-options))
     (cond-> (not (nil? integrations)) (enable-integrations integrations))
     (cond-> (not (nil? timestamp)) (.timestamp timestamp))
