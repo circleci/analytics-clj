@@ -3,7 +3,8 @@
   (:require [analytics-clj.external :refer :all]
             [analytics-clj.utils :refer [string-keys]])
   (:import (com.segment.analytics Analytics)
-           (com.segment.analytics.messages GroupMessage
+           (com.segment.analytics.messages AliasMessage
+                                           GroupMessage
                                            IdentifyMessage
                                            ScreenMessage
                                            TrackMessage)))
@@ -106,6 +107,8 @@
   "`alias` is how you associate one identity with another.
   This is an advanced method, but it is required to manage
   user identities successfully in some of our integrations."
-  [^Analytics analytics previous-id user-id]
-  ;; TODO
-  )
+  ([^Analytics analytics previous-id user-id]
+   (alias analytics previous-id user-id nil))
+  ([^Analytics analytics previous-id user-id options]
+   (enqueue analytics (doto (AliasMessage/builder previous-id)
+                        (common-properties (merge {:user-id user-id} options))))))

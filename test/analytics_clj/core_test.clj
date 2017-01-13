@@ -115,3 +115,7 @@
                               (reset! called true))]
       (a/group analytics "1234" "group-5678" {:name "Segment"})
       (is @called))))
+
+(deftest test-alias
+  (testing "a simple alias"
+    (a/alias analytics "1234" "5678")))
