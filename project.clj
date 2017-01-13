@@ -4,4 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [com.segment.analytics.java/analytics "2.0.0-RC7"]])
+                 [com.segment.analytics.java/analytics "2.0.0-RC7"]]
+  :plugins [[lein-codox "0.10.2"]]
+  :codox {:output-path "doc"
+          :namespaces [analytics-clj.core]})
