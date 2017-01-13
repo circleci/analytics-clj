@@ -84,4 +84,13 @@
                                              (is (= "1234567890" (-> o vals first)))
                                              (reset! called true))]
         (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integration-options {"Amplitude" {:session-id "1234567890"}}})
+        (is @called))))
+
+  (testing "sending a custom timestamp"
+    (let [called (atom false)
+          timestamp (java.util.Date.)]
+      (with-redefs [e/timestamp* (fn [mb t]
+                                   (is (= t timestamp))
+                                   (reset! called true))]
+        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:timestamp timestamp})
         (is @called)))))
