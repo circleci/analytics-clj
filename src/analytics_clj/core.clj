@@ -3,7 +3,8 @@
   (:require [analytics-clj.external :refer :all]
             [analytics-clj.utils :refer [string-keys]])
   (:import (com.segment.analytics Analytics)
-           (com.segment.analytics.messages IdentifyMessage
+           (com.segment.analytics.messages GroupMessage
+                                           IdentifyMessage
                                            ScreenMessage
                                            TrackMessage)))
 
@@ -93,10 +94,13 @@
   project or team! It also lets you record custom traits
   about the group, like industry or number of employees."
   ([^Analytics analytics user-id group-id]
-   (group analytics user-id group-id {}))
+   (group analytics user-id group-id nil nil))
   ([^Analytics analytics user-id group-id traits]
-   ;; TODO
-   ))
+   (group analytics user-id group-id traits nil))
+  ([^Analytics analytics user-id group-id traits options]
+   (enqueue analytics (doto (GroupMessage/builder group-id)
+                        (common-properties (merge {:user-id user-id} options))
+                        (cond-> (not (nil? traits)) (traits* (string-keys traits)))))))
 
 (defn alias
   "`alias` is how you associate one identity with another.

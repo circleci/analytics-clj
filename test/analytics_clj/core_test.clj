@@ -107,3 +107,11 @@
                                     (reset! called true))]
         (a/screen analytics "1234" "Login Page" {:path "/users/login"})
         (is @called)))))
+
+(deftest test-group
+  (let [called (atom false)]
+    (with-redefs [e/traits* (fn [mb traits]
+                              (is (= "name" (-> traits keys first)))
+                              (reset! called true))]
+      (a/group analytics "1234" "group-5678" {:name "Segment"})
+      (is @called))))
