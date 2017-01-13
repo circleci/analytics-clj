@@ -3,9 +3,7 @@
   (:require [analytics-clj.external :refer :all]
             [analytics-clj.utils :refer [string-keys]])
   (:import (com.segment.analytics Analytics)
-           (com.segment.analytics.messages IdentifyMessage
-                                           MessageBuilder
-                                           TrackMessage)))
+           (com.segment.analytics.messages IdentifyMessage TrackMessage)))
 
 (def ^:private ctx {"library" "analytics-clj"})
 
@@ -16,8 +14,8 @@
 
 (defn enqueue
   "Top-level `enqueue` function to allow for extensibility in the future."
-  [^Analytics analytics ^MessageBuilder message]
-  (.enqueue analytics message))
+  [^Analytics analytics message-builder]
+  (.enqueue analytics message-builder))
 
 (defn flush
   "Flush events in the message queue."
@@ -29,24 +27,24 @@
   [^Analytics analytics]
   (.shutdown analytics))
 
-(defn- enable-integrations [^MessageBuilder message-builder integrations]
+(defn- enable-integrations [message-builder integrations]
   (doseq [[k v] integrations]
     (enable-integration* message-builder k v)))
 
-(defn- enable-integration-options [^MessageBuilder message-builder integration-options]
+(defn- enable-integration-options [message-builder integration-options]
   (doseq [[integration options] integration-options]
     (integration-options* message-builder integration (string-keys options))))
 
 (defn common-properties
   "The `MessageBuilder` interface has a set of properties common to all messages."
-  [^MessageBuilder message-builder {:keys [anonymous-id context integration-options integrations timestamp user-id]}]
+  [message-builder {:keys [anonymous-id context integration-options integrations timestamp user-id]}]
   (doto message-builder
-    (cond-> (not (nil? anonymous-id)) (.anonymousId anonymous-id))
+    (cond-> (not (nil? anonymous-id)) (anonymous-id* anonymous-id))
     (cond-> (not (nil? context)) (context* (merge ctx (string-keys context))))
     (cond-> (not (nil? integration-options)) (enable-integration-options integration-options))
     (cond-> (not (nil? integrations)) (enable-integrations integrations))
-    (cond-> (not (nil? timestamp)) (.timestamp timestamp))
-    (cond-> (not (nil? user-id)) (.userId user-id))))
+    (cond-> (not (nil? timestamp)) (timestamp* timestamp))
+    (cond-> (not (nil? user-id)) (user-id* user-id))))
 
 (defn identify
   "`identify` lets you tie a user to their actions and
