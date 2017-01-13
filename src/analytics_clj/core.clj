@@ -53,9 +53,9 @@
   record traits about them. It includes a unique User ID
   and any optional traits you know about them."
   ([^Analytics analytics user-id]
-   (identify analytics user-id {}))
+   (identify analytics user-id nil nil))
   ([^Analytics analytics user-id traits]
-   (identify analytics user-id traits {}))
+   (identify analytics user-id traits nil))
   ([^Analytics analytics user-id traits options]
    (enqueue analytics (doto (IdentifyMessage/builder)
                         (common-properties (merge {:user-id user-id} options))
@@ -66,9 +66,9 @@
   Every action triggers what we call an “event”, which can
   also have associated properties."
   ([^Analytics analytics user-id event]
-   (track analytics user-id event {}))
+   (track analytics user-id event nil nil))
   ([^Analytics analytics user-id event properties]
-   (track analytics user-id event properties {}))
+   (track analytics user-id event properties nil))
   ([^Analytics analytics user-id event properties options]
    (enqueue analytics (doto (TrackMessage/builder event)
                         (common-properties (merge {:user-id user-id} options))
@@ -79,9 +79,9 @@
   sees a screen of your mobile app, along with optional
   extra information about the page being viewed."
   ([^Analytics analytics user-id name]
-   (screen analytics user-id name {}))
+   (screen analytics user-id name nil nil))
   ([^Analytics analytics user-id name properties]
-   (screen analytics user-id name properties {}))
+   (screen analytics user-id name properties nil))
   ([^Analytics analytics user-id name properties options]
    (enqueue analytics (doto (ScreenMessage/builder name)
                         (common-properties (merge {:user-id user-id} options))
