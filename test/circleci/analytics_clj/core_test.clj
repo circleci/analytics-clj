@@ -7,16 +7,6 @@
 
 (defonce analytics (a/initialize "foobarbaz"))
 
-(defmacro testing-void
-  "When you want to test a Java function that returns void.
-  Just to be sure it doesn't throw an exception."
-  [description & body]
-  `(testing ~description
-     (try
-       ~@body
-       (finally
-         (is true)))))
-
 (deftest test-initialize
   (testing "initialize an analytics client"
     (is (not (nil? analytics))))
@@ -34,8 +24,8 @@
           (is @called))))))
 
 (deftest test-identify
-  (testing-void "identify a user"
-                (a/identify analytics "1234"))
+  (testing "identify a user"
+    (a/identify analytics "1234"))
 
   (testing "identify a user with traits"
     (let [called (atom false)]
@@ -56,12 +46,12 @@
         (a/identify analytics "1234" {:email/address "foo@bar.com"})
         (is @called))))
 
-  (testing-void "identify an anonymous user"
-                (a/identify analytics nil {} {:anonymous-id (UUID/randomUUID)})))
+  (testing "identify an anonymous user"
+    (a/identify analytics nil {} {:anonymous-id (UUID/randomUUID)})))
 
 (deftest test-track
-  (testing-void "track a simple event"
-                (a/track analytics "1234" "signup"))
+  (testing "track a simple event"
+    (a/track analytics "1234" "signup"))
 
   (testing "track an event with custom properties"
     (let [called (atom false)]
@@ -109,8 +99,8 @@
         (is @called)))))
 
 (deftest test-screen
-  (testing-void "a simple screen call"
-                (a/screen analytics "1234" "Login Page"))
+  (testing "a simple screen call"
+    (a/screen analytics "1234" "Login Page"))
 
   (testing "a screen call with custom properties"
     (let [called (atom false)]
