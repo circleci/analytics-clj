@@ -34,7 +34,7 @@
           (is @called))))))
 
 (deftest test-identify
-  (testing-void "we're able to identify a user"
+  (testing-void "identify a user"
                 (a/identify analytics "1234"))
 
   (testing "identify a user with traits"
