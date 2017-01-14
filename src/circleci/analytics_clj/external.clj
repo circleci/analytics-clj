@@ -1,6 +1,30 @@
 (ns circleci.analytics-clj.external
   (:import (com.segment.analytics.messages MessageBuilder)))
 
+;;; com.segment.analytics.Analytics$Builder
+
+(defn client* [analytics-builder client]
+  (doto analytics-builder
+    (.client client)))
+
+(defn log* [analytics-builder log]
+  (doto analytics-builder
+    (.log log)))
+
+(defn endpoint* [analytics-builder endpoint]
+  (doto analytics-builder
+    (.endpoint endpoint)))
+
+(defn network-executor* [analytics-builder network-executor]
+  (doto analytics-builder
+    (.networkExecutor network-executor)))
+
+(defn callback* [analytics-builder callback]
+  (doto analytics-builder
+    (.callback callback)))
+
+;;; com.segment.analytics.messages MessageBuilder
+
 (defn anonymous-id* [^MessageBuilder message-builder anonymous-id]
   (doto message-builder
     (.anonymousId anonymous-id)))
@@ -16,10 +40,6 @@
 (defn integration-options* [^MessageBuilder message-builder integration options]
   (doto message-builder
     (.integrationOptions integration options)))
-
-(defn log* [analytics-builder log]
-  (doto analytics-builder
-    (.log log)))
 
 (defn properties* [^MessageBuilder message-builder properties]
   (doto message-builder

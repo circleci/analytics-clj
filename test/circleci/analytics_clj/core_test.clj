@@ -30,7 +30,7 @@
         (with-redefs [e/log* (fn [ab l]
                                (is (instance? Log l))
                                (reset! called true))]
-          (is (not (nil? (a/initialize "foobarbaz" (logger)))))
+          (is (not (nil? (a/initialize "foobarbaz" {:log (logger)}))))
           (is @called))))))
 
 (deftest test-identify
