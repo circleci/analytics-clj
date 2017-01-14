@@ -2,7 +2,8 @@
   (:require [circleci.analytics-clj.core :as a]
             [circleci.analytics-clj.external :as e]
             [clojure.test :refer :all])
-  (:import (java.util UUID)))
+  (:import (com.segment.analytics Log)
+           (java.util UUID)))
 
 (defonce analytics (a/initialize "foobarbaz"))
 
@@ -18,7 +19,19 @@
 
 (deftest test-initialize
   (testing "initialize an analytics client"
-    (is (not (nil? analytics)))))
+    (is (not (nil? analytics))))
+
+  (testing "initialize an analytics client with logging"
+    (let [called (atom false)]
+      (letfn [(logger []
+                (reify Log
+                  (print [this level format args])
+                  (print [this level error format args])))]
+        (with-redefs [e/log* (fn [ab l]
+                               (is (instance? Log l))
+                               (reset! called true))]
+          (is (not (nil? (a/initialize "foobarbaz" (logger)))))
+          (is @called))))))
 
 (deftest test-identify
   (testing-void "we're able to identify a user"
