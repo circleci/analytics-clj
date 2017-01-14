@@ -50,7 +50,9 @@
     (integration-options* message-builder integration (string-keys options))))
 
 (defn common-properties
-  "The `MessageBuilder` interface has a set of properties common to all messages."
+  "The `MessageBuilder` interface has a set of properties common to all messages.
+
+  https://segment.com/docs/spec/common/"
 
   [message-builder {:keys [anonymous-id context integration-options integrations timestamp user-id]}]
   (doto message-builder
