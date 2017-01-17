@@ -56,6 +56,14 @@ With properties:
 
 `(track analytics "user-id" "signup" {:company "Acme Inc."})`
 
+A full example:
+
+```
+(track analytics (:id user) "signup" {:company "Acme Inc."} {:context {:language "en-us"}
+                                                             :integrations {"AdRoll" false}
+                                                             :integration-options {"Amplitude" {:session-id (:id session)}}})
+```
+
 #### Screen
 
 `(screen analytics "1234" "Login Page")`
