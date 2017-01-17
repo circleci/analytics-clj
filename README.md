@@ -23,6 +23,19 @@ View the full [API](https://circleci.github.io/analytics-clj/).
 (def analytics (initialize "<writeKey>"))
 ```
 
+With logging:
+
+```
+(defn logger []
+  (reify com.segment.analytics.Log
+    (print [this level format args]
+      (println (str (java.util.Date.)) (str level) "\t" args))
+    (print [this level error format args]
+      (println error))))
+
+(def analytics (initialize "<writeKey>" (logger)))
+```
+
 ### Messages
 
 All of the message types can take `options`. See [Spec: Common Fields](https://segment.com/docs/spec/common/) for a list of common fields between all message types.
