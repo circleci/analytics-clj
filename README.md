@@ -33,7 +33,7 @@ With logging:
     (print [this level error format args]
       (println error))))
 
-(def analytics (initialize "<writeKey>" (logger)))
+(def analytics (initialize "<writeKey>" {:log (logger)}))
 ```
 
 ### Messages
