@@ -61,8 +61,8 @@
   (doseq [[integration options] integration-options]
     (integration-options* message-builder integration (string-keys options))))
 
-(defn common-properties
-  "The `MessageBuilder` interface has a set of properties common to all messages.
+(defn common-fields
+  "The `MessageBuilder` interface has a set of fields common to all messages.
 
   https://segment.com/docs/spec/common/"
 
@@ -98,7 +98,7 @@
 
   ([^Analytics analytics user-id traits options]
    (enqueue analytics (doto (IdentifyMessage/builder)
-                        (common-properties (merge {:user-id user-id} options))
+                        (common-fields (merge {:user-id user-id} options))
                         (cond-> (not (nil? traits)) (traits* (string-keys traits)))))))
 
 (defn track
@@ -114,7 +114,7 @@
 
   ([^Analytics analytics user-id event properties options]
    (enqueue analytics (doto (TrackMessage/builder event)
-                        (common-properties (merge {:user-id user-id} options))
+                        (common-fields (merge {:user-id user-id} options))
                         (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
 
 (defn screen
@@ -130,7 +130,7 @@
 
   ([^Analytics analytics user-id name properties options]
    (enqueue analytics (doto (ScreenMessage/builder name)
-                        (common-properties (merge {:user-id user-id} options))
+                        (common-fields (merge {:user-id user-id} options))
                         (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
 
 (defn group
@@ -147,7 +147,7 @@
 
   ([^Analytics analytics user-id group-id traits options]
    (enqueue analytics (doto (GroupMessage/builder group-id)
-                        (common-properties (merge {:user-id user-id} options))
+                        (common-fields (merge {:user-id user-id} options))
                         (cond-> (not (nil? traits)) (traits* (string-keys traits)))))))
 
 (defn alias
@@ -160,4 +160,4 @@
 
   ([^Analytics analytics previous-id user-id options]
    (enqueue analytics (doto (AliasMessage/builder previous-id)
-                        (common-properties (merge {:user-id user-id} options))))))
+                        (common-fields (merge {:user-id user-id} options))))))
