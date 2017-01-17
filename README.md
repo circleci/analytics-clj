@@ -29,7 +29,7 @@ With logging:
 (defn logger []
   (reify com.segment.analytics.Log
     (print [this level format args]
-      (println (str (java.util.Date.)) (str level) "\t" args))
+      (println (str (java.util.Date.) "\t" level "\t" args)))
     (print [this level error format args]
       (println error))))
 
