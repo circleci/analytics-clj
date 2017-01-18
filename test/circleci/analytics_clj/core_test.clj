@@ -41,9 +41,9 @@
   (testing "identify a user with namespaced keyword traits"
     (let [called (atom false)]
       (with-redefs [e/traits* (fn [mb traits]
-                                (is (= "email/address" (-> traits keys first)))
+                                (is (= "company/name" (-> traits keys first)))
                                 (reset! called true))]
-        (a/identify analytics "1234" {:email/address "foo@bar.com"})
+        (a/identify analytics "1234" {:company/name "Acme Inc."})
         (is @called))))
 
   (testing "identify an anonymous user"
