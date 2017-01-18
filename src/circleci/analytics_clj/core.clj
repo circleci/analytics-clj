@@ -134,7 +134,7 @@
                         (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
 
 (defn group
-  "`group` lets you associate an identified user user with
+  "`group` lets you associate an identified user with
   a group. A group could be a company, organization, account,
   project or team! It also lets you record custom traits
   about the group, like industry or number of employees."
