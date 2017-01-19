@@ -53,37 +53,37 @@
   [^Analytics analytics]
   (.shutdown analytics))
 
-(defn- enable-integrations [message-builder integrations]
-  (doseq [[integration enable?] integrations]
-    (enable-integration* message-builder integration enable?)))
-
-(defn- enable-integration-options [message-builder integration-options]
-  (doseq [[integration options] integration-options]
-    (integration-options* message-builder integration (string-keys options))))
-
 (defn common-fields
   "The `MessageBuilder` interface has a set of fields common to all messages.
 
   https://segment.com/docs/spec/common/"
 
   [message-builder {:keys [anonymous-id context integration-options integrations timestamp user-id]}]
-  (doto message-builder
-    (context* (merge ctx (string-keys context)))
+  (letfn [(enable-integrations [message-builder integrations]
+            (doseq [[integration enable?] integrations]
+              (enable-integration* message-builder integration enable?)))
 
-    (cond-> (not (nil? anonymous-id))
-      (anonymous-id* anonymous-id))
+          (enable-integration-options [message-builder integration-options]
+            (doseq [[integration options] integration-options]
+              (integration-options* message-builder integration (string-keys options))))]
 
-    (cond-> (not (nil? integration-options))
-      (enable-integration-options integration-options))
+    (doto message-builder
+      (context* (merge ctx (string-keys context)))
 
-    (cond-> (not (nil? integrations))
-      (enable-integrations integrations))
+      (cond-> (not (nil? anonymous-id))
+        (anonymous-id* anonymous-id))
 
-    (cond-> (not (nil? timestamp))
-      (timestamp* timestamp))
+      (cond-> (not (nil? integration-options))
+        (enable-integration-options integration-options))
 
-    (cond-> (not (nil? user-id))
-      (user-id* user-id))))
+      (cond-> (not (nil? integrations))
+        (enable-integrations integrations))
+
+      (cond-> (not (nil? timestamp))
+        (timestamp* timestamp))
+
+      (cond-> (not (nil? user-id))
+        (user-id* user-id)))))
 
 (defn identify
   "`identify` lets you tie a user to their actions and
