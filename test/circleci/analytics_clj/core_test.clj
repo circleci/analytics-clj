@@ -66,11 +66,11 @@
       (is (= "Amplitude" (-> e/enable-integration* bond/calls first :args second)))
       (is (= false (-> e/enable-integration* bond/calls first :args (nth 2))))))
 
-  (testing "custom context is merged with library context"
+  (testing "custom context"
     (bond/with-spy [e/context*]
       (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:context {:language "en-us"}})
       (is (= 1 (-> e/context* bond/calls count)))
-      (is (= #{"library" "language"} (-> e/context* bond/calls first :args second keys set)))))
+      (is (= #{"language"} (-> e/context* bond/calls first :args second keys set)))))
 
   (testing "integration options"
     (bond/with-spy [e/integration-options*]

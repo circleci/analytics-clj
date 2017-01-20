@@ -2,9 +2,6 @@
   (:require [circleci.analytics-clj.external :refer :all]
             [circleci.analytics-clj.utils :refer [string-keys]]))
 
-(def ^:private ctx {"library" {"name" "analytics-clj"
-                               "version" "0.8.0"}})
-
 (defn common-fields
   "The `MessageBuilder` interface has a set of fields common to all messages.
 
@@ -22,7 +19,8 @@
               (integration-options* message-builder integration (string-keys options))))]
 
     (doto message-builder
-      (context* (merge ctx (string-keys context)))
+      (cond-> (not (nil? context))
+        (context* (string-keys context)))
 
       (cond-> (not (nil? anonymous-id))
         (anonymous-id* anonymous-id))
