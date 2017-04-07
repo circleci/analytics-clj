@@ -1,5 +1,5 @@
 (ns circleci.analytics-clj.utils
-  (require [clojure.walk :as walk]))
+  (:require [clojure.walk :as walk]))
 
 (defn string-keys
   "Transform all map keys from keywords to strings while preserving namespacing (unlike clojure.walk/stringify-keys)."
