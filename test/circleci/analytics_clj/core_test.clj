@@ -92,13 +92,11 @@
     (a/screen analytics "1234" "Login Screen"))
 
   (testing "a screen call with custom properties"
-    (let [called (atom false)]
-      (with-redefs [e/properties* (fn [mb properties]
-                                    (is (= "path" (-> properties keys first)))
-                                    (is (= "/users/login" (-> properties vals first)))
-                                    (reset! called true))]
-        (a/screen analytics "1234" "Login Screen" {:path "/users/login"})
-        (is @called)))))
+    (bond/with-spy [e/properties*]
+      (a/screen analytics "1234" "Login Screen" {:path "/users/login"})
+      (is (= 1 (-> e/properties* bond/calls count)))
+      (is (= "path" (-> e/properties* bond/calls first :args second keys first)))
+      (is (= "/users/login" (-> e/properties* bond/calls first :args second vals first))))))
 
 (deftest test-page
   (testing "a simple page call"
