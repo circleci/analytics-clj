@@ -112,12 +112,10 @@
         (is @called)))))
 
 (deftest test-group
-  (let [called (atom false)]
-    (with-redefs [e/traits* (fn [mb traits]
-                              (is (= "name" (-> traits keys first)))
-                              (reset! called true))]
-      (a/group analytics "1234" "group-5678" {:name "Segment"})
-      (is @called))))
+  (bond/with-spy [e/traits*]
+    (a/group analytics "1234" "group-5678" {:name "Segment"})
+    (is (= 1 (-> e/traits* bond/calls count)))
+    (is (= "name" (-> e/traits* bond/calls first :args second keys first)))))
 
 (deftest test-alias
   (testing "a simple alias"
