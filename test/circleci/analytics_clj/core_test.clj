@@ -1,5 +1,6 @@
 (ns circleci.analytics-clj.core-test
-  (:require [circleci.analytics-clj.core :as a]
+  (:require [bond.james :as bond]
+            [circleci.analytics-clj.core :as a]
             [circleci.analytics-clj.external :as e]
             [clojure.test :refer :all])
   (:import (com.segment.analytics Log)
@@ -12,16 +13,14 @@
     (is (not (nil? analytics))))
 
   (testing "initialize an analytics client with logging"
-    (let [called (atom false)]
-      (letfn [(logger []
-                (reify Log
-                  (print [this level format args])
-                  (print [this level error format args])))]
-        (with-redefs [e/log* (fn [ab l]
-                               (is (instance? Log l))
-                               (reset! called true))]
-          (is (not (nil? (a/initialize "foobarbaz" {:log (logger)}))))
-          (is @called))))))
+    (letfn [(logger []
+              (reify Log
+                (print [this level format args])
+                (print [this level error format args])))]
+      (bond/with-spy [e/log*]
+        (is (not (nil? (a/initialize "foobarbaz" {:log (logger)}))))
+        (is (= 1 (-> e/log* bond/calls count)))
+        (is (instance? Log (-> e/log* bond/calls first :args second)))))))
 
 (deftest test-identify
   (testing "identify a user"
