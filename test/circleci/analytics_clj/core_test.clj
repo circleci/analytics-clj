@@ -50,49 +50,42 @@
     (a/track analytics "1234" "signup"))
 
   (testing "track an event with custom properties"
-    (let [called (atom false)]
-      (with-redefs [e/properties* (fn [mb properties]
-                                    (is (= "company" (-> properties keys first)))
-                                    (reset! called true))]
-        (a/track analytics "1234" "signup" {"company" "Acme Inc."})
-        (a/track analytics "1234" "signup" {:company "Acme Inc."})
-        (is @called))))
+    (bond/with-spy [e/properties*]
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."})
+      (is (= 1 (-> e/properties* bond/calls count)))
+      (is (= "company" (-> e/properties* bond/calls first :args second keys first)))
+
+      (a/track analytics "1234" "signup" {:company "Acme Inc."})
+      (is (= 2 (-> e/properties* bond/calls count)))
+      (is (= "company" (-> e/properties* bond/calls first :args second keys first)))))
 
   (testing "disable an integration"
-    (let [called (atom false)]
-      (with-redefs [e/enable-integration* (fn [mb integration enable?]
-                                            (is (= "Amplitude" integration))
-                                            (is (= false enable?))
-                                            (reset! called true))]
-        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})
-        (is @called))))
+    (bond/with-spy [e/enable-integration*]
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})
+      (is (= 1 (-> e/enable-integration* bond/calls count)))
+      (is (= "Amplitude" (-> e/enable-integration* bond/calls first :args second)))
+      (is (= false (-> e/enable-integration* bond/calls first :args (nth 2))))))
 
   (testing "custom context is merged with library context"
-    (let [called (atom false)]
-      (with-redefs [e/context* (fn [mb c]
-                                 (is (= #{"library" "language"} (set (keys c))))
-                                 (reset! called true))]
-        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:context {:language "en-us"}})
-        (is @called))))
+    (bond/with-spy [e/context*]
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:context {:language "en-us"}})
+      (is (= 1 (-> e/context* bond/calls count)))
+      (is (= #{"library" "language"} (-> e/context* bond/calls first :args second keys set)))))
 
   (testing "integration options"
-    (let [called (atom false)]
-      (with-redefs [e/integration-options* (fn [mb i o]
-                                             (is (= "Amplitude" i))
-                                             (is (= "session-id" (-> o keys first)))
-                                             (is (= "1234567890" (-> o vals first)))
-                                             (reset! called true))]
-        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integration-options {"Amplitude" {:session-id "1234567890"}}})
-        (is @called))))
+    (bond/with-spy [e/integration-options*]
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integration-options {"Amplitude" {:session-id "1234567890"}}})
+      (is (= 1 (-> e/integration-options* bond/calls count)))
+      (is (= "Amplitude" (-> e/integration-options* bond/calls first :args second)))
+      (is (= "session-id" (-> e/integration-options* bond/calls first :args (nth 2) keys first)))
+      (is (= "1234567890" (-> e/integration-options* bond/calls first :args (nth 2) vals first)))))
 
   (testing "sending a custom timestamp"
-    (let [called (atom false)
-          timestamp (java.util.Date.)]
-      (with-redefs [e/timestamp* (fn [mb t]
-                                   (is (= t timestamp))
-                                   (reset! called true))]
+    (let [timestamp (java.util.Date.)]
+      (bond/with-spy [e/timestamp*]
         (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:timestamp timestamp})
-        (is @called)))))
+        (is (= 1 (-> e/timestamp* bond/calls count)))
+        (is (= timestamp (-> e/timestamp* bond/calls first :args second)))))))
 
 (deftest test-screen
   (testing "a simple screen call"
