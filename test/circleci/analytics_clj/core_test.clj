@@ -27,23 +27,20 @@
     (a/identify analytics "1234"))
 
   (testing "identify a user with traits"
-    (let [called (atom false)]
-      (with-redefs [e/traits* (fn [mb traits]
-                                (is (= "email" (-> traits keys first)))
-                                (reset! called true))]
-        (a/identify analytics "1234" {"email" "foo@bar.com"})
-        (is @called)
-        (reset! called false)
-        (a/identify analytics "1234" {:email "foo@bar.com"})
-        (is @called))))
+    (bond/with-spy [e/traits*]
+      (a/identify analytics "1234" {"email" "foo@bar.com"})
+      (is (= 1 (-> e/traits* bond/calls count)))
+      (is (= "email" (-> e/traits* bond/calls first :args second keys first)))
+
+      (a/identify analytics "1234" {:email "foo@bar.com"})
+      (is (= 2 (-> e/traits* bond/calls count)))
+      (is (= "email" (-> e/traits* bond/calls first :args second keys first)))))
 
   (testing "identify a user with namespaced keyword traits"
-    (let [called (atom false)]
-      (with-redefs [e/traits* (fn [mb traits]
-                                (is (= "company/name" (-> traits keys first)))
-                                (reset! called true))]
-        (a/identify analytics "1234" {:company/name "Acme Inc."})
-        (is @called))))
+    (bond/with-spy [e/traits*]
+      (a/identify analytics "1234" {:company/name "Acme Inc."})
+      (is (= 1 (-> e/traits* bond/calls count)))
+      (is (= "company/name" (-> e/traits* bond/calls first :args second keys first)))))
 
   (testing "identify an anonymous user"
     (a/identify analytics nil {} {:anonymous-id (UUID/randomUUID)})))
