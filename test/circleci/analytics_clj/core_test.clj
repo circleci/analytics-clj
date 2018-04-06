@@ -85,7 +85,14 @@
       (bond/with-spy [e/timestamp*]
         (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:timestamp timestamp})
         (is (= 1 (-> e/timestamp* bond/calls count)))
-        (is (= timestamp (-> e/timestamp* bond/calls first :args second)))))))
+        (is (= timestamp (-> e/timestamp* bond/calls first :args second))))))
+
+  (testing "sending a custom message ID"
+    (let [message-id (java.util.UUID/randomUUID)]
+      (bond/with-spy [e/message-id*]
+        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:message-id message-id})
+        (is (= 1 (-> e/message-id* bond/calls count)))
+        (is (= message-id (-> e/message-id* bond/calls first :args second)))))))
 
 (deftest test-screen
   (testing "a simple screen call"

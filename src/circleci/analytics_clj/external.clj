@@ -49,6 +49,10 @@
   (doto message-builder
     (.timestamp timestamp)))
 
+(defn message-id* [^MessageBuilder message-builder message-id]
+  (doto message-builder
+    (.messageId message-id)))
+
 (defn traits* [^MessageBuilder message-builder traits]
   (doto message-builder
     (.traits traits)))

@@ -63,7 +63,7 @@
 
   {:added "0.4.0"}
 
-  [message-builder {:keys [anonymous-id context integration-options integrations timestamp user-id]}]
+  [message-builder {:keys [anonymous-id context integration-options integrations timestamp message-id user-id]}]
   (letfn [(enable-integrations [message-builder integrations]
             (doseq [[integration enable?] integrations]
               (enable-integration* message-builder integration enable?)))
@@ -86,6 +86,9 @@
 
       (cond-> (not (nil? timestamp))
         (timestamp* timestamp))
+
+      (cond-> (not (nil? message-id))
+        (message-id* message-id))
 
       (cond-> (not (nil? user-id))
         (user-id* user-id)))))
