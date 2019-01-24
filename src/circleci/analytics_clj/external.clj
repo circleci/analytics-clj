@@ -41,10 +41,6 @@
   (doto message-builder
     (.integrationOptions integration options)))
 
-(defn properties* [^MessageBuilder message-builder properties]
-  (doto message-builder
-    (.properties properties)))
-
 (defn timestamp* [^MessageBuilder message-builder timestamp]
   (doto message-builder
     (.timestamp timestamp)))
@@ -53,10 +49,18 @@
   (doto message-builder
     (.messageId message-id)))
 
-(defn traits* [^MessageBuilder message-builder traits]
-  (doto message-builder
-    (.traits traits)))
-
 (defn user-id* [^MessageBuilder message-builder user-id]
   (doto message-builder
     (.userId user-id)))
+
+;;; com.segment.analytics.messages.TrackMessage$Builder
+
+(defn properties* [^com.segment.analytics.messages.TrackMessage$Builder message-builder properties]
+  (doto message-builder
+    (.properties properties)))
+
+;;; com.segment.analytics.messages.IdentifyMessage$Builder
+
+(defn traits* [^com.segment.analytics.messages.IdentifyMessage$Builder message-builder traits]
+  (doto message-builder
+    (.traits traits)))
