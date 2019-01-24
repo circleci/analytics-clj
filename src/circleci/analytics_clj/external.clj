@@ -3,23 +3,23 @@
 
 ;;; com.segment.analytics.Analytics$Builder
 
-(defn client* [analytics-builder client]
+(defn client* [^com.segment.analytics.Analytics$Builder analytics-builder client]
   (doto analytics-builder
     (.client client)))
 
-(defn log* [analytics-builder log]
+(defn log* [^com.segment.analytics.Analytics$Builder analytics-builder log]
   (doto analytics-builder
     (.log log)))
 
-(defn endpoint* [analytics-builder endpoint]
+(defn endpoint* [^com.segment.analytics.Analytics$Builder analytics-builder endpoint]
   (doto analytics-builder
     (.endpoint endpoint)))
 
-(defn network-executor* [analytics-builder network-executor]
+(defn network-executor* [^com.segment.analytics.Analytics$Builder analytics-builder network-executor]
   (doto analytics-builder
     (.networkExecutor network-executor)))
 
-(defn callback* [analytics-builder callback]
+(defn callback* [^com.segment.analytics.Analytics$Builder analytics-builder callback]
   (doto analytics-builder
     (.callback callback)))
 
