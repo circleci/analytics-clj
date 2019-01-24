@@ -1,5 +1,5 @@
 Version 0.4.2 (January 24, 2019)
-=============================
+================================
 
 * [FIXED](https://github.com/circleci/analytics-clj/pull/6): Fix the library version sent to Segment
 
