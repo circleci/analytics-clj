@@ -1,3 +1,9 @@
+Version 0.6.0 (Unreleased)
+==========================
+
+* [ADDED](https://github.com/circleci/analytics-clj/pull/4): Allow sending a custom message ID.
+* Support for Segment 2.0.0
+
 Version 0.5.0 (January 24, 2019)
 ================================
 
