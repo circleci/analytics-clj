@@ -4,7 +4,7 @@
 (defn string-keys
   "Transform all map keys from keywords to strings while preserving namespacing (unlike clojure.walk/stringify-keys)."
   [m]
-  (let [f (fn [[k v]]
+  (let [f (fn [[^clojure.lang.Keyword k v]]
             (if (keyword? k)
               [(str (.-sym k)) v]
               [(name k) v]))]
