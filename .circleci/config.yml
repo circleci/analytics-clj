@@ -1,0 +1,50 @@
+defaults: &defaults
+  working_directory: ~/analytics-clj
+  docker:
+    - image: clojure:lein
+
+version: 2
+
+jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
+
+      - run: lein deps
+
+      - run: lein check
+
+      - save_cache:
+          key: v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
+          paths:
+            - "~/.m2"
+
+  test:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
+
+      - run: lein test
+
+      - save_cache:
+          key: v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
+          paths:
+            - "~/.m2"
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
