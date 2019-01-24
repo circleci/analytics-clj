@@ -90,8 +90,8 @@ We provided a top level `enqueue` function to allow you to do the following:
 
 ```
 (enqueue analytics (doto (YourMessageType/builder)
-                     (.userId "user-id")
-                     (.properties {"company" "Acme Inc."})))
+                         (.userId "user-id")
+                         (.properties {"company" "Acme Inc."})))
 ```
 
 ## License
