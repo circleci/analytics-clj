@@ -128,7 +128,7 @@
 (defn screen
   "The `screen` method lets you you record whenever a user
   sees a screen of your mobile app, along with optional
-  extra information about the page being viewed."
+  extra information about the screen being viewed."
 
   {:added "0.4.0"}
 

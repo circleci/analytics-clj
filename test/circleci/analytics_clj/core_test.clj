@@ -100,7 +100,7 @@
 
 (deftest test-screen
   (testing "a simple screen call"
-    (a/screen analytics "1234" "Login Page"))
+    (a/screen analytics "1234" "Login Screen"))
 
   (testing "a screen call with custom properties"
     (let [called (atom false)]
@@ -108,7 +108,7 @@
                                     (is (= "path" (-> properties keys first)))
                                     (is (= "/users/login" (-> properties vals first)))
                                     (reset! called true))]
-        (a/screen analytics "1234" "Login Page" {:path "/users/login"})
+        (a/screen analytics "1234" "Login Screen" {:path "/users/login"})
         (is @called)))))
 
 (deftest test-group
