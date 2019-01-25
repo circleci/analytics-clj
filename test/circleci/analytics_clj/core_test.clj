@@ -111,6 +111,19 @@
         (a/screen analytics "1234" "Login Screen" {:path "/users/login"})
         (is @called)))))
 
+(deftest test-page
+  (testing "a simple page call"
+    (a/page analytics "1234" "Login Page"))
+
+  (testing "a apge call with custom properties"
+    (let [called (atom false)]
+      (with-redefs [e/properties* (fn [mb properties]
+                                    (is (= "path" (-> properties keys first)))
+                                    (is (= "/users/login" (-> properties vals first)))
+                                    (reset! called true))]
+        (a/page analytics "1234" "Login Page" {:path "/users/login"})
+        (is @called)))))
+
 (deftest test-group
   (let [called (atom false)]
     (with-redefs [e/traits* (fn [mb traits]

@@ -7,10 +7,11 @@
                                            GroupMessage
                                            IdentifyMessage
                                            ScreenMessage
-                                           TrackMessage)))
+                                           TrackMessage
+                                           PageMessage)))
 
 (def ^:private ctx {"library" {"name" "analytics-clj"
-                               "version" "0.4.2"}})
+                               "version" "0.5.0"}})
 
 (defn initialize
   "Start building an Analytics instance."
@@ -140,6 +141,24 @@
 
   ([^Analytics analytics user-id name properties options]
    (enqueue analytics (doto (ScreenMessage/builder name)
+                        (common-fields (merge {:user-id user-id} options))
+                        (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
+
+(defn page
+  "The `page` method lets you record whenever a user
+  sees a page of your website, along with optional
+  extra information about the page being viewed."
+
+  {:added "0.5.0"}
+
+  ([^Analytics analytics user-id name]
+   (page analytics user-id name nil nil))
+
+  ([^Analytics analytics user-id name properties]
+   (page analytics user-id name properties nil))
+
+  ([^Analytics analytics user-id name properties options]
+   (enqueue analytics (doto (PageMessage/builder name)
                         (common-fields (merge {:user-id user-id} options))
                         (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
 
