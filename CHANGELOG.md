@@ -1,3 +1,8 @@
+Version 0.5.0 (January 24, 2019)
+================================
+
+* [ADDED](https://github.com/circleci/analytics-clj/pull/7): Add support for the page method https://segment.com/docs/sources/server/java/#page
+
 Version 0.4.2 (January 24, 2019)
 ================================
 
