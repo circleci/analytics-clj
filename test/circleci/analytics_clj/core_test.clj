@@ -1,5 +1,6 @@
 (ns circleci.analytics-clj.core-test
-  (:require [circleci.analytics-clj.core :as a]
+  (:require [bond.james :as bond]
+            [circleci.analytics-clj.core :as a]
             [circleci.analytics-clj.external :as e]
             [clojure.test :refer :all])
   (:import (com.segment.analytics Log)
@@ -12,39 +13,34 @@
     (is (not (nil? analytics))))
 
   (testing "initialize an analytics client with logging"
-    (let [called (atom false)]
-      (letfn [(logger []
-                (reify Log
-                  (print [this level format args])
-                  (print [this level error format args])))]
-        (with-redefs [e/log* (fn [ab l]
-                               (is (instance? Log l))
-                               (reset! called true))]
-          (is (not (nil? (a/initialize "foobarbaz" {:log (logger)}))))
-          (is @called))))))
+    (letfn [(logger []
+              (reify Log
+                (print [this level format args])
+                (print [this level error format args])))]
+      (bond/with-spy [e/log*]
+        (is (not (nil? (a/initialize "foobarbaz" {:log (logger)}))))
+        (is (= 1 (-> e/log* bond/calls count)))
+        (is (instance? Log (-> e/log* bond/calls first :args second)))))))
 
 (deftest test-identify
   (testing "identify a user"
     (a/identify analytics "1234"))
 
   (testing "identify a user with traits"
-    (let [called (atom false)]
-      (with-redefs [e/traits* (fn [mb traits]
-                                (is (= "email" (-> traits keys first)))
-                                (reset! called true))]
-        (a/identify analytics "1234" {"email" "foo@bar.com"})
-        (is @called)
-        (reset! called false)
-        (a/identify analytics "1234" {:email "foo@bar.com"})
-        (is @called))))
+    (bond/with-spy [e/traits*]
+      (a/identify analytics "1234" {"email" "foo@bar.com"})
+      (is (= 1 (-> e/traits* bond/calls count)))
+      (is (= "email" (-> e/traits* bond/calls first :args second keys first)))
+
+      (a/identify analytics "1234" {:email "foo@bar.com"})
+      (is (= 2 (-> e/traits* bond/calls count)))
+      (is (= "email" (-> e/traits* bond/calls first :args second keys first)))))
 
   (testing "identify a user with namespaced keyword traits"
-    (let [called (atom false)]
-      (with-redefs [e/traits* (fn [mb traits]
-                                (is (= "company/name" (-> traits keys first)))
-                                (reset! called true))]
-        (a/identify analytics "1234" {:company/name "Acme Inc."})
-        (is @called))))
+    (bond/with-spy [e/traits*]
+      (a/identify analytics "1234" {:company/name "Acme Inc."})
+      (is (= 1 (-> e/traits* bond/calls count)))
+      (is (= "company/name" (-> e/traits* bond/calls first :args second keys first)))))
 
   (testing "identify an anonymous user"
     (a/identify analytics nil {} {:anonymous-id (UUID/randomUUID)})))
@@ -54,83 +50,70 @@
     (a/track analytics "1234" "signup"))
 
   (testing "track an event with custom properties"
-    (let [called (atom false)]
-      (with-redefs [e/properties* (fn [mb properties]
-                                    (is (= "company" (-> properties keys first)))
-                                    (reset! called true))]
-        (a/track analytics "1234" "signup" {"company" "Acme Inc."})
-        (a/track analytics "1234" "signup" {:company "Acme Inc."})
-        (is @called))))
+    (bond/with-spy [e/properties*]
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."})
+      (is (= 1 (-> e/properties* bond/calls count)))
+      (is (= "company" (-> e/properties* bond/calls first :args second keys first)))
+
+      (a/track analytics "1234" "signup" {:company "Acme Inc."})
+      (is (= 2 (-> e/properties* bond/calls count)))
+      (is (= "company" (-> e/properties* bond/calls first :args second keys first)))))
 
   (testing "disable an integration"
-    (let [called (atom false)]
-      (with-redefs [e/enable-integration* (fn [mb integration enable?]
-                                            (is (= "Amplitude" integration))
-                                            (is (= false enable?))
-                                            (reset! called true))]
-        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})
-        (is @called))))
+    (bond/with-spy [e/enable-integration*]
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integrations {"Amplitude" false}})
+      (is (= 1 (-> e/enable-integration* bond/calls count)))
+      (is (= "Amplitude" (-> e/enable-integration* bond/calls first :args second)))
+      (is (= false (-> e/enable-integration* bond/calls first :args (nth 2))))))
 
   (testing "custom context is merged with library context"
-    (let [called (atom false)]
-      (with-redefs [e/context* (fn [mb c]
-                                 (is (= #{"library" "language"} (set (keys c))))
-                                 (reset! called true))]
-        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:context {:language "en-us"}})
-        (is @called))))
+    (bond/with-spy [e/context*]
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:context {:language "en-us"}})
+      (is (= 1 (-> e/context* bond/calls count)))
+      (is (= #{"library" "language"} (-> e/context* bond/calls first :args second keys set)))))
 
   (testing "integration options"
-    (let [called (atom false)]
-      (with-redefs [e/integration-options* (fn [mb i o]
-                                             (is (= "Amplitude" i))
-                                             (is (= "session-id" (-> o keys first)))
-                                             (is (= "1234567890" (-> o vals first)))
-                                             (reset! called true))]
-        (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integration-options {"Amplitude" {:session-id "1234567890"}}})
-        (is @called))))
+    (bond/with-spy [e/integration-options*]
+      (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:integration-options {"Amplitude" {:session-id "1234567890"}}})
+      (is (= 1 (-> e/integration-options* bond/calls count)))
+      (is (= "Amplitude" (-> e/integration-options* bond/calls first :args second)))
+      (is (= "session-id" (-> e/integration-options* bond/calls first :args (nth 2) keys first)))
+      (is (= "1234567890" (-> e/integration-options* bond/calls first :args (nth 2) vals first)))))
 
   (testing "sending a custom timestamp"
-    (let [called (atom false)
-          timestamp (java.util.Date.)]
-      (with-redefs [e/timestamp* (fn [mb t]
-                                   (is (= t timestamp))
-                                   (reset! called true))]
+    (let [timestamp (java.util.Date.)]
+      (bond/with-spy [e/timestamp*]
         (a/track analytics "1234" "signup" {"company" "Acme Inc."} {:timestamp timestamp})
-        (is @called)))))
+        (is (= 1 (-> e/timestamp* bond/calls count)))
+        (is (= timestamp (-> e/timestamp* bond/calls first :args second)))))))
 
 (deftest test-screen
   (testing "a simple screen call"
     (a/screen analytics "1234" "Login Screen"))
 
   (testing "a screen call with custom properties"
-    (let [called (atom false)]
-      (with-redefs [e/properties* (fn [mb properties]
-                                    (is (= "path" (-> properties keys first)))
-                                    (is (= "/users/login" (-> properties vals first)))
-                                    (reset! called true))]
-        (a/screen analytics "1234" "Login Screen" {:path "/users/login"})
-        (is @called)))))
+    (bond/with-spy [e/properties*]
+      (a/screen analytics "1234" "Login Screen" {:path "/users/login"})
+      (is (= 1 (-> e/properties* bond/calls count)))
+      (is (= "path" (-> e/properties* bond/calls first :args second keys first)))
+      (is (= "/users/login" (-> e/properties* bond/calls first :args second vals first))))))
 
 (deftest test-page
   (testing "a simple page call"
     (a/page analytics "1234" "Login Page"))
 
   (testing "a apge call with custom properties"
-    (let [called (atom false)]
-      (with-redefs [e/properties* (fn [mb properties]
-                                    (is (= "path" (-> properties keys first)))
-                                    (is (= "/users/login" (-> properties vals first)))
-                                    (reset! called true))]
-        (a/page analytics "1234" "Login Page" {:path "/users/login"})
-        (is @called)))))
+    (bond/with-spy [e/properties*]
+      (a/page analytics "1234" "Login Page" {:path "/users/login"})
+      (is (= 1 (-> e/properties* bond/calls count)))
+      (is (= "path" (-> e/properties* bond/calls first :args second keys first)))
+      (is (= "/users/login" (-> e/properties* bond/calls first :args second vals first))))))
 
 (deftest test-group
-  (let [called (atom false)]
-    (with-redefs [e/traits* (fn [mb traits]
-                              (is (= "name" (-> traits keys first)))
-                              (reset! called true))]
-      (a/group analytics "1234" "group-5678" {:name "Segment"})
-      (is @called))))
+  (bond/with-spy [e/traits*]
+    (a/group analytics "1234" "group-5678" {:name "Segment"})
+    (is (= 1 (-> e/traits* bond/calls count)))
+    (is (= "name" (-> e/traits* bond/calls first :args second keys first)))))
 
 (deftest test-alias
   (testing "a simple alias"
