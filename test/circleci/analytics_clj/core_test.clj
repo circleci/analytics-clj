@@ -103,13 +103,11 @@
     (a/page analytics "1234" "Login Page"))
 
   (testing "a apge call with custom properties"
-    (let [called (atom false)]
-      (with-redefs [e/properties* (fn [mb properties]
-                                    (is (= "path" (-> properties keys first)))
-                                    (is (= "/users/login" (-> properties vals first)))
-                                    (reset! called true))]
-        (a/page analytics "1234" "Login Page" {:path "/users/login"})
-        (is @called)))))
+    (bond/with-spy [e/properties*]
+      (a/page analytics "1234" "Login Page" {:path "/users/login"})
+      (is (= 1 (-> e/properties* bond/calls count)))
+      (is (= "path" (-> e/properties* bond/calls first :args second keys first)))
+      (is (= "/users/login" (-> e/properties* bond/calls first :args second vals first))))))
 
 (deftest test-group
   (bond/with-spy [e/traits*]
