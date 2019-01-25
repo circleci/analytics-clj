@@ -53,14 +53,10 @@
   (doto message-builder
     (.userId user-id)))
 
-;;; com.segment.analytics.messages.TrackMessage$Builder
-
-(defn properties* [^com.segment.analytics.messages.TrackMessage$Builder message-builder properties]
+(defn properties* [message-builder properties]
   (doto message-builder
     (.properties properties)))
 
-;;; com.segment.analytics.messages.IdentifyMessage$Builder
-
-(defn traits* [^com.segment.analytics.messages.IdentifyMessage$Builder message-builder traits]
+(defn traits* [message-builder traits]
   (doto message-builder
     (.traits traits)))
