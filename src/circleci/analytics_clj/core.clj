@@ -6,9 +6,9 @@
            (com.segment.analytics.messages AliasMessage
                                            GroupMessage
                                            IdentifyMessage
+                                           PageMessage
                                            ScreenMessage
-                                           TrackMessage
-                                           PageMessage)))
+                                           TrackMessage)))
 
 (def ^:private ctx {"library" {"name" "analytics-clj"
                                "version" "0.5.0"}})
