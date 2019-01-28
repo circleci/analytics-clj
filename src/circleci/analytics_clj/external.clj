@@ -23,6 +23,10 @@
   (doto analytics-builder
     (.callback callback)))
 
+(defn user-agent* [^com.segment.analytics.Analytics$Builder analytics-builder user-agent]
+  (doto analytics-builder
+    (.userAgent user-agent)))
+
 ;;; com.segment.analytics.messages MessageBuilder
 
 (defn anonymous-id* [^MessageBuilder message-builder anonymous-id]
