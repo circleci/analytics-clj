@@ -3,7 +3,7 @@
             [circleci.analytics-clj.utils :refer [string-keys]]))
 
 (def ^:private ctx {"library" {"name" "analytics-clj"
-                               "version" "0.7.1"}})
+                               "version" "0.8.0"}})
 
 (defn common-fields
   "The `MessageBuilder` interface has a set of fields common to all messages.

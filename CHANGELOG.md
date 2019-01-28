@@ -1,5 +1,5 @@
-Version 0.8.0 (Unreleased)
-==========================
+Version 0.8.0 (January 27, 2019)
+================================
 
 * [REMOVED](https://github.com/circleci/analytics-clj/pull/10): Privatize circleci.analytics-clj.core/common-fields
 
