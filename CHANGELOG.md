@@ -1,3 +1,8 @@
+Version 0.7.1 (Unreleased)
+==========================
+
+* Support for Segment 2.1.1
+
 Version 0.7.0 (January 27, 2019)
 ================================
 
