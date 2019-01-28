@@ -3,23 +3,23 @@
 
 ;;; com.segment.analytics.Analytics$Builder
 
-(defn client* [analytics-builder client]
+(defn client* [^com.segment.analytics.Analytics$Builder analytics-builder client]
   (doto analytics-builder
     (.client client)))
 
-(defn log* [analytics-builder log]
+(defn log* [^com.segment.analytics.Analytics$Builder analytics-builder log]
   (doto analytics-builder
     (.log log)))
 
-(defn endpoint* [analytics-builder endpoint]
+(defn endpoint* [^com.segment.analytics.Analytics$Builder analytics-builder endpoint]
   (doto analytics-builder
     (.endpoint endpoint)))
 
-(defn network-executor* [analytics-builder network-executor]
+(defn network-executor* [^com.segment.analytics.Analytics$Builder analytics-builder network-executor]
   (doto analytics-builder
     (.networkExecutor network-executor)))
 
-(defn callback* [analytics-builder callback]
+(defn callback* [^com.segment.analytics.Analytics$Builder analytics-builder callback]
   (doto analytics-builder
     (.callback callback)))
 
@@ -41,18 +41,22 @@
   (doto message-builder
     (.integrationOptions integration options)))
 
-(defn properties* [^MessageBuilder message-builder properties]
-  (doto message-builder
-    (.properties properties)))
-
 (defn timestamp* [^MessageBuilder message-builder timestamp]
   (doto message-builder
     (.timestamp timestamp)))
 
-(defn traits* [^MessageBuilder message-builder traits]
+(defn message-id* [^MessageBuilder message-builder message-id]
   (doto message-builder
-    (.traits traits)))
+    (.messageId message-id)))
 
 (defn user-id* [^MessageBuilder message-builder user-id]
   (doto message-builder
     (.userId user-id)))
+
+(defn properties* [message-builder properties]
+  (doto message-builder
+    (.properties properties)))
+
+(defn traits* [message-builder traits]
+  (doto message-builder
+    (.traits traits)))
