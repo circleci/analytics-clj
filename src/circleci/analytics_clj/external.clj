@@ -15,6 +15,10 @@
   (doto analytics-builder
     (.endpoint endpoint)))
 
+(defn user-agent* [^com.segment.analytics.Analytics$Builder analytics-builder user-agent]
+  (doto analytics-builder
+    (.userAgent user-agent)))
+
 (defn network-executor* [^com.segment.analytics.Analytics$Builder analytics-builder network-executor]
   (doto analytics-builder
     (.networkExecutor network-executor)))
@@ -22,10 +26,6 @@
 (defn callback* [^com.segment.analytics.Analytics$Builder analytics-builder callback]
   (doto analytics-builder
     (.callback callback)))
-
-(defn user-agent* [^com.segment.analytics.Analytics$Builder analytics-builder user-agent]
-  (doto analytics-builder
-    (.userAgent user-agent)))
 
 ;;; com.segment.analytics.messages MessageBuilder
 
