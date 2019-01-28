@@ -66,11 +66,19 @@ A full example:
 
 #### Screen
 
-`(screen analytics "1234" "Login Page")`
+`(screen analytics "1234" "Login Screen")`
 
 With properties:
 
-`(screen analytics "1234" "Login Page" {:path "/users/login"})`
+`(screen analytics "1234" "Login Screen" {:path "/users/login"})`
+
+#### Page
+
+`(page analytics "1234" "Login Page")`
+
+With properties:
+
+`(page analytics "1234" "Login Page" {:path "/users/login"})`
 
 #### Group
 
