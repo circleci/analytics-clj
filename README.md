@@ -10,7 +10,7 @@ For full documentation on the Segment.io 2.x Java client, see [analytics-java](h
 
 ## Installation
 
-`[circleci/analytics-clj "0.7.0"]`
+`[circleci/analytics-clj "0.7.1"]`
 
 ## Usage
 

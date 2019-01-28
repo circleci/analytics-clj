@@ -1,5 +1,5 @@
-Version 0.7.1 (Unreleased)
-==========================
+Version 0.7.1 (January 27, 2019)
+================================
 
 * Support for Segment 2.1.1
 
