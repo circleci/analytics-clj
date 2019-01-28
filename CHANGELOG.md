@@ -1,5 +1,5 @@
 Version 0.7.0 (January 27, 2019)
-===============================
+================================
 
 * [ADDED](https://github.com/circleci/analytics-clj/pull/8): Allow sending a custom user-agent for HTTP requests.
 * Support for Segment 2.1.0
