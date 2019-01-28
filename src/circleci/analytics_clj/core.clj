@@ -21,7 +21,7 @@
   ([write-key]
    (initialize write-key nil))
 
-  ([write-key {:keys [client log endpoint network-executor callback]}]
+  ([write-key {:keys [client log endpoint network-executor callback user-agent]}]
    (.build (doto (Analytics/builder write-key)
              (cond-> (not (nil? client))
                (client* client))
@@ -36,7 +36,10 @@
                (network-executor* network-executor))
 
              (cond-> (not (nil? callback))
-               (callback* callback))))))
+               (callback* callback))
+
+             (cond-> (not (nil? user-agent))
+               (user-agent* user-agent))))))
 
 (defn enqueue
   "Top-level `enqueue` function to allow for extensibility in the future."
