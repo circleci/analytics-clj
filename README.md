@@ -102,21 +102,6 @@ We provided a top level `enqueue` function to allow you to do the following:
                          (.properties {"company" "Acme Inc."})))
 ```
 
-## Generating API Docs
-
-The `lein codox` command is configured in `project.clj` to output documentation to `../analytics-clj-docs`. This should be configured to be the `gh-pages` branch so the API docs can be hosted on GitHub.
-
-```
-~/code
-  |- analytics-clj
-  |- analytics-clj-docs
-  ...
-```
-
-Once `lein doc` is run in the `analytics-clj` directory, you can commit the changes in `analytics-clj-docs` to the `gh-pages` branch of this repository. Then the API docs are hosted [here](https://circleci.github.io/analytics-clj/).
-
-See [Creating Project Pages manually](https://help.github.com/articles/creating-project-pages-manually/).
-
 ## License
 
 Copyright © 2019 CircleCI
