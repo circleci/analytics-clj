@@ -40,6 +40,22 @@ jobs:
           paths:
             - "~/.m2"
 
+  ancient:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
+
+      - run: lein ancient :all
+
+      - save_cache:
+          key: v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
+          paths:
+            - "~/.m2"
+
 workflows:
   version: 2
   build_and_test:
@@ -48,3 +64,13 @@ workflows:
       - test:
           requires:
             - build
+  monthly_deps_check:
+    jobs:
+      - ancient
+    triggers:
+      - schedule:
+          # At 11:43 on day-of-month 19
+          cron: "43 11 19 * *"
+          filters:
+            branches:
+              only: master
