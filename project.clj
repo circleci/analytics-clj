@@ -7,6 +7,5 @@
                  [com.segment.analytics.java/analytics "2.1.1"]]
   :profiles {:dev {:dependencies [[bond "0.2.6"]]}}
   :plugins [[lein-codox "0.10.7"]]
-  :codox {:output-path "../analytics-clj-docs"
-          :namespaces [circleci.analytics-clj.core]
-          :source-uri "https://github.com/circleci/analytics-clj/blob/v{version}/{filepath}#L{line}"})
+  :codox {:output-path "docs"
+          :namespaces [circleci.analytics-clj.core]})
