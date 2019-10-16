@@ -1,3 +1,8 @@
+Version 0.8.1 (TBD)
+================================
+
+* [REMOVED](https://github.com/circleci/analytics-clj/pull/1): Do not send library name and version in the context
+
 Version 0.8.0 (January 27, 2019)
 ================================
 
