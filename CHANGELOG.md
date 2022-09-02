@@ -1,3 +1,8 @@
+Version 0.8.1 (September 1, 2022)
+================================
+
+* [FIXED](https://github.com/circleci/analytics-clj/pull/19): Update com.segment.analytics.java/analytics to version 3.3.1
+
 Version 0.8.0 (January 27, 2019)
 ================================
 
