@@ -1,3 +1,9 @@
+Version 0.8.2 (October 3, 2023)
+================================
+
+* [FIXED](https://github.com/circleci/analytics-clj/pull/21): Update com.segment.analytics.java/analytics to version 3.5.0
+* [FIXED](https://github.com/circleci/analytics-clj/pull/21): Force update okio-jvm to version 3.4.0 fix CVE-2023-3635
+
 Version 0.8.1 (September 1, 2022)
 ================================
 
