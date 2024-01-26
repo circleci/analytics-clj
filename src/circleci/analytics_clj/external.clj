@@ -15,7 +15,7 @@
   (doto analytics-builder
     (.endpoint endpoint)))
 
-(defn endpoint* [^com.segment.analytics.Analytics$Builder analytics-builder upload-url]
+(defn upload-url* [^com.segment.analytics.Analytics$Builder analytics-builder upload-url]
   (doto analytics-builder
     (.setUploadURL upload-url)))
 
