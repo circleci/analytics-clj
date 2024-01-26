@@ -15,6 +15,10 @@
   (doto analytics-builder
     (.endpoint endpoint)))
 
+(defn endpoint* [^com.segment.analytics.Analytics$Builder analytics-builder upload-url]
+  (doto analytics-builder
+    (.setUploadURL upload-url)))
+
 (defn user-agent* [^com.segment.analytics.Analytics$Builder analytics-builder user-agent]
   (doto analytics-builder
     (.userAgent user-agent)))
