@@ -24,6 +24,22 @@ jobs:
           paths:
             - "~/.m2"
 
+  docs:
+    <<: *defaults
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
+
+      - run: lein codox
+
+      - save_cache:
+          key: v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
+          paths:
+            - "~/.m2"
+
   test:
     <<: *defaults
     steps:
@@ -61,6 +77,7 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - docs
       - test:
           requires:
             - build
