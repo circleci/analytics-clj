@@ -7,7 +7,7 @@
                  [com.squareup.okio/okio-jvm "3.4.0"]
                  [com.segment.analytics.java/analytics "3.5.0"]]
   :profiles {:dev {:dependencies [[bond "0.2.6"]]}}
-  :plugins [[lein-ancient "0.6.15"]
+  :plugins [[lein-ancient "0.7.0"]
             [lein-codox "0.10.8"]]
   :codox {:output-path "docs"
           :namespaces [circleci.analytics-clj.core]})
