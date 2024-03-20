@@ -4,7 +4,7 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.11.2"]
-                 [com.squareup.okio/okio-jvm "3.4.0"]
+                 [com.squareup.okio/okio-jvm "3.9.0"]
                  [com.segment.analytics.java/analytics "3.5.0"]]
   :profiles {:dev {:dependencies [[bond "0.2.6"]]}}
   :plugins [[lein-codox "0.10.8"]]
