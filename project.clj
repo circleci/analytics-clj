@@ -3,7 +3,7 @@
   :url "https://github.com/circleci/analytics-clj"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.11.2"]
                  [com.squareup.okio/okio-jvm "3.4.0"]
                  [com.segment.analytics.java/analytics "3.5.0"]]
   :profiles {:dev {:dependencies [[bond "0.2.6"]]}}
