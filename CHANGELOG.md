@@ -1,3 +1,14 @@
+Version NEXT
+================================
+
+* [#25](https://github.com/circleci/analytics-clj/pull/25): Update CODEOWNERS with more relevant team
+* [#24](https://github.com/circleci/analytics-clj/pull/24): Configure renovate
+* [#26](https://github.com/circleci/analytics-clj/pull/26): Bump `lein codox`
+* [#29](https://github.com/circleci/analytics-clj/pull/29): Add `docs` job to ensure `lein codox` continues to work
+* [#32](https://github.com/circleci/analytics-clj/pull/32): Remove `lein ancient` plugin & its associated scheduled workflow now that we use Renovate
+* [#31](https://github.com/circleci/analytics-clj/pull/31): Bump Clojure dependency to 1.11.2
+* [#27](https://github.com/circleci/analytics-clj/pull/27): Bump transitive dependency okio-java and move it to managed-dependencies
+
 Version 0.8.2 (October 3, 2023)
 ================================
 
