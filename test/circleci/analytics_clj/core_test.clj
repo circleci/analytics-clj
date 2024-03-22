@@ -2,7 +2,7 @@
   (:require [bond.james :as bond]
             [circleci.analytics-clj.core :as a]
             [circleci.analytics-clj.external :as e]
-            [clojure.test :refer :all])
+            [clojure.test :refer [deftest testing is]])
   (:import (com.segment.analytics Log)
            (java.util UUID)))
 
@@ -15,8 +15,8 @@
   (testing "initialize an analytics client with logging"
     (letfn [(logger []
               (reify Log
-                (print [this level format args])
-                (print [this level error format args])))]
+                (print [_this _level _format _args])
+                (print [_this _level _error _format _args])))]
       (bond/with-spy [e/log*]
         (is (not (nil? (a/initialize "foobarbaz" {:log (logger)}))))
         (is (= 1 (-> e/log* bond/calls count)))
