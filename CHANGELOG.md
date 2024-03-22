@@ -1,4 +1,4 @@
-Version 0.10.0 (March 22, 2024)
+Version 0.10.1 (March 22, 2024)
 ================================
 
 * [#25](https://github.com/circleci/analytics-clj/pull/25): Update CODEOWNERS with more relevant team
@@ -9,6 +9,12 @@ Version 0.10.0 (March 22, 2024)
 * [#31](https://github.com/circleci/analytics-clj/pull/31): Bump Clojure dependency to 1.11.2
 * [#27](https://github.com/circleci/analytics-clj/pull/27): Bump transitive dependency okio-java and move it to managed-dependencies
 * [#34](https://github.com/circleci/analytics-clj/pull/34): Bump `com.segment.analytics.java` dependency
+
+Version 0.10.0 (March 22, 2024)
+================================
+
+Not pushed to Clojars because of a bug in the new automatic publishing CI job.
+
 
 Version 0.8.2 (October 3, 2023)
 ================================
