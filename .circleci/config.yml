@@ -13,13 +13,6 @@ jobs:
       - checkout
       - run: clj-kondo --lint .
 
-  check:
-    <<: *defaults
-    steps:
-      - checkout
-      - run: lein deps
-      - run: lein check
-
   docs:
     <<: *defaults
     steps:
@@ -32,6 +25,7 @@ jobs:
     steps:
       - checkout
       - run: lein deps
+      - run: lein check
       - run: lein test
 
 workflows:
@@ -39,6 +33,5 @@ workflows:
   build_and_test:
     jobs:
       - clj-kondo
-      - check
       - docs
       - test
