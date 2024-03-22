@@ -8,6 +8,7 @@ Version NEXT
 * [#32](https://github.com/circleci/analytics-clj/pull/32): Remove `lein ancient` plugin & its associated scheduled workflow now that we use Renovate
 * [#31](https://github.com/circleci/analytics-clj/pull/31): Bump Clojure dependency to 1.11.2
 * [#27](https://github.com/circleci/analytics-clj/pull/27): Bump transitive dependency okio-java and move it to managed-dependencies
+* [#34](https://github.com/circleci/analytics-clj/pull/34): Bump `com.segment.analytics.java` dependency
 
 Version 0.8.2 (October 3, 2023)
 ================================
