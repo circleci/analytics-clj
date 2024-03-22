@@ -39,9 +39,18 @@ workflows:
   version: 2
   test_and_publish:
     jobs:
-      - clj-kondo
-      - docs
-      - test
+      - clj-kondo:
+          filters:
+            tags:
+              only: /.*/
+      - docs:
+          filters:
+            tags:
+              only: /.*/
+      - test:
+          filters:
+            tags:
+              only: /.*/
       - publish:
           context: clojars-publish
           requires:
