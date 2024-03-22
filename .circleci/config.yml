@@ -13,63 +13,32 @@ jobs:
       - checkout
       - run: clj-kondo --lint .
 
-  build:
+  check:
     <<: *defaults
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-            - v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
-
       - run: lein deps
-
       - run: lein check
-
-      - save_cache:
-          key: v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
-          paths:
-            - "~/.m2"
 
   docs:
     <<: *defaults
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-            - v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
-
+      - run: lein deps
       - run: lein codox
-
-      - save_cache:
-          key: v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
-          paths:
-            - "~/.m2"
 
   test:
     <<: *defaults
     steps:
       - checkout
-
-      - restore_cache:
-          keys:
-            - v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
-
+      - run: lein deps
       - run: lein test
-
-      - save_cache:
-          key: v1-m2-{{ .Branch }}-{{ checksum "project.clj" }}
-          paths:
-            - "~/.m2"
 
 workflows:
   version: 2
   build_and_test:
     jobs:
       - clj-kondo
-      - build
+      - check
       - docs
-      - test:
-          requires:
-            - build
+      - test
