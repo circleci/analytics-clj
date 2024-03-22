@@ -1,7 +1,7 @@
 (ns circleci.analytics-clj.core
   (:refer-clojure :exclude [alias flush])
   (:require [circleci.analytics-clj.common :as common]
-            [circleci.analytics-clj.external :refer :all]
+            [circleci.analytics-clj.external :as external]
             [circleci.analytics-clj.utils :refer [string-keys]])
   (:import (com.segment.analytics Analytics)
            (com.segment.analytics.messages AliasMessage
@@ -22,22 +22,22 @@
   ([write-key {:keys [client log endpoint user-agent network-executor callback]}]
    (.build (doto (Analytics/builder write-key)
              (cond-> (not (nil? client))
-               (client* client))
+               (external/client* client))
 
              (cond-> (not (nil? log))
-               (log* log))
+               (external/log* log))
 
              (cond-> (not (nil? endpoint))
-               (endpoint* endpoint))
+               (external/endpoint* endpoint))
 
              (cond-> (not (nil? user-agent))
-               (user-agent* user-agent))
+               (external/user-agent* user-agent))
 
              (cond-> (not (nil? network-executor))
-               (network-executor* network-executor))
+               (external/network-executor* network-executor))
 
              (cond-> (not (nil? callback))
-               (callback* callback))))))
+               (external/callback* callback))))))
 
 (defn enqueue
   "Top-level `enqueue` function to allow for extensibility in the future."
@@ -73,7 +73,7 @@
   ([^Analytics analytics user-id traits options]
    (enqueue analytics (doto (IdentifyMessage/builder)
                         (common/common-fields (merge {:user-id user-id} options))
-                        (cond-> (not (nil? traits)) (traits* (string-keys traits)))))))
+                        (cond-> (not (nil? traits)) (external/traits* (string-keys traits)))))))
 
 (defn track
   "`track` lets you record the actions your users perform.
@@ -91,7 +91,7 @@
   ([^Analytics analytics user-id event properties options]
    (enqueue analytics (doto (TrackMessage/builder event)
                         (common/common-fields (merge {:user-id user-id} options))
-                        (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
+                        (cond-> (not (nil? properties)) (external/properties* (string-keys properties)))))))
 
 (defn screen
   "The `screen` method lets you you record whenever a user
@@ -109,7 +109,7 @@
   ([^Analytics analytics user-id name properties options]
    (enqueue analytics (doto (ScreenMessage/builder name)
                         (common/common-fields (merge {:user-id user-id} options))
-                        (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
+                        (cond-> (not (nil? properties)) (external/properties* (string-keys properties)))))))
 
 (defn page
   "The `page` method lets you record whenever a user
@@ -127,7 +127,7 @@
   ([^Analytics analytics user-id name properties options]
    (enqueue analytics (doto (PageMessage/builder name)
                         (common/common-fields (merge {:user-id user-id} options))
-                        (cond-> (not (nil? properties)) (properties* (string-keys properties)))))))
+                        (cond-> (not (nil? properties)) (external/properties* (string-keys properties)))))))
 
 (defn group
   "`group` lets you associate an identified user with
@@ -146,7 +146,7 @@
   ([^Analytics analytics user-id group-id traits options]
    (enqueue analytics (doto (GroupMessage/builder group-id)
                         (common/common-fields (merge {:user-id user-id} options))
-                        (cond-> (not (nil? traits)) (traits* (string-keys traits)))))))
+                        (cond-> (not (nil? traits)) (external/traits* (string-keys traits)))))))
 
 (defn alias
   "`alias` is how you associate one identity with another.

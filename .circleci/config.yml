@@ -6,6 +6,13 @@ defaults: &defaults
 version: 2
 
 jobs:
+  clj-kondo:
+    docker:
+      - image: cljkondo/clj-kondo:2024.03.13
+    steps:
+      - checkout
+      - run: clj-kondo --lint .
+
   build:
     <<: *defaults
     steps:
@@ -60,6 +67,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
+      - clj-kondo
       - build
       - docs
       - test:
