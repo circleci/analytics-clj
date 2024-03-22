@@ -1,4 +1,4 @@
-(defproject circleci/analytics-clj "0.8.2"
+(defproject circleci/analytics-clj "0.10.0"
   :description "Idiomatic Clojure wrapper for the Segment.io 2.x Java client"
   :url "https://github.com/circleci/analytics-clj"
   :license {:name "Eclipse Public License"
@@ -9,4 +9,13 @@
   :profiles {:dev {:dependencies [[bond "0.2.6"]]}}
   :plugins [[lein-codox "0.10.8"]]
   :codox {:output-path "docs"
-          :namespaces [circleci.analytics-clj.core]})
+          :namespaces [circleci.analytics-clj.core]}
+
+  :repositories [["releases" {:url "https://clojars.org/repo"
+                              :username :env/clojars_username
+                              :password :env/clojars_token
+                              :sign-releases false}]
+                 ["snapshots" {:url "https://clojars.org/repo"
+                               :username :env/clojars_username
+                               :password :env/clojars_token
+                               :sign-releases false}]])

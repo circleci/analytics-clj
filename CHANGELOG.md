@@ -1,4 +1,4 @@
-Version NEXT
+Version 0.10.0 (March 22, 2024)
 ================================
 
 * [#25](https://github.com/circleci/analytics-clj/pull/25): Update CODEOWNERS with more relevant team

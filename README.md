@@ -10,7 +10,9 @@ For full documentation on the Segment.io 2.x Java client, see [analytics-java](h
 
 ## Installation
 
-`[circleci/analytics-clj "0.8.2"]`
+`[circleci/analytics-clj "<VERSION>"]`
+
+To find the most recent published version, see https://clojars.org/circleci/analytics-clj
 
 ## Usage
 
@@ -101,6 +103,16 @@ We provided a top level `enqueue` function to allow you to do the following:
                          (.userId "user-id")
                          (.properties {"company" "Acme Inc."})))
 ```
+
+
+## Releasing
+
+New git tags are automatically published to [clojars](https://clojars.org/circleci/bond).
+
+The following should be updated on the main/master branch before tagging:
+
+- `project.clj` - version
+- `CHANGELOG.md` - summary of changes
 
 ## License
 
