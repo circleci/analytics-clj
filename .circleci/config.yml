@@ -32,6 +32,19 @@ jobs:
     <<: *defaults
     steps:
       - checkout
+      - run: |
+          # Grab the numerical version of the tag
+          tag_version=${CIRCLE_TAG#v}
+
+          # Extract the version from the project.clj
+          project_version=$(awk 'NR==1 {print $3}' project.clj | sed -e 's/"//g')
+
+          # Fail if the tags do not match
+          test ${tag_version} = ${project_version} || exit 1
+
+          # Fail if the tag version is not in CHANGELOG
+          grep "^Version" CHANGELOG.md | grep "${tag_version}" || exit 1
+
       - run: lein deps
       - run: lein deploy
 

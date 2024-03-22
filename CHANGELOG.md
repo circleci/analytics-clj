@@ -1,3 +1,8 @@
+Version 0.10.2 (March 22, 2024)
+================================
+
+Code identical to 0.10.0 or 0.10.1, this is just a fix to the automatic release workflow.
+
 Version 0.10.1 (March 22, 2024)
 ================================
 
