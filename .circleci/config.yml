@@ -8,7 +8,7 @@ version: 2
 jobs:
   clj-kondo:
     docker:
-      - image: cljkondo/clj-kondo:2024.08.01
+      - image: cljkondo/clj-kondo:2024.08.29
     steps:
       - checkout
       - run: clj-kondo --lint .
