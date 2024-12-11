@@ -5,7 +5,10 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.11.2"]
                  [com.segment.analytics.java/analytics "3.5.1"]]
-  :managed-dependencies [[com.squareup.okio/okio-jvm "3.9.0"]]
+  :managed-dependencies [[com.squareup.okio/okio-jvm "3.9.0"]
+                         [org.jetbrains.kotlin/kotlin-stdlib "2.1.0"]
+                         [org.jetbrains.kotlin/kotlin-stdlib-jdk8 "2.1.0"]
+                         [org.jetbrains.kotlin/kotlin-stdlib-jdk7 "2.1.0"]]
   :profiles {:dev {:dependencies [[bond "0.2.6"]]}}
   :plugins [[lein-codox "0.10.8"]]
   :codox {:output-path "docs"
