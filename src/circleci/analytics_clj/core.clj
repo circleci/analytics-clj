@@ -19,7 +19,7 @@
   ([write-key]
    (initialize write-key nil))
 
-  ([write-key {:keys [client log endpoint user-agent network-executor callback]}]
+  ([write-key {:keys [client log endpoint upload-url user-agent network-executor callback]}]
    (.build (doto (Analytics/builder write-key)
              (cond-> (not (nil? client))
                (external/client* client))
@@ -29,6 +29,9 @@
 
              (cond-> (not (nil? endpoint))
                (external/endpoint* endpoint))
+
+             (cond-> (not (nil? upload-url))
+               (upload-url* upload-url))
 
              (cond-> (not (nil? user-agent))
                (external/user-agent* user-agent))
